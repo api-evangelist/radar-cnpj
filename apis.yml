@@ -1,0 +1,69 @@
+name: Radar CNPJ
+description: >-
+  Brazilian company-data service built on the Receita Federal CNPJ registry. Paste a business idea in plain text to see
+  how many companies already operate in that space, plus CNPJ lookup, advanced search, geolocation, and
+  change-monitoring. Explicitly agent-first, shipping a full stack of machine-readable discovery artifacts including
+  OpenAPI, a hosted MCP server, and llms.txt.
+url: https://raw.githubusercontent.com/api-evangelist/radar-cnpj/refs/heads/main/apis.yml
+created: '2026-09-05'
+modified: '2026-09-05'
+specificationVersion: '0.21'
+tags:
+  - Business & Company Data
+  - Government/Open Data
+  - Receita Federal
+  - CNPJ
+  - Brazil
+  - Regulatory & Compliance
+  - KYB
+  - Search
+  - Data Enrichment
+  - Geolocation
+  - Monitoring & Alerts
+  - Agent-native
+  - MCP
+  - Micropayments
+  - x402
+apis:
+  - name: Radar CNPJ API
+    description: >-
+      Public REST API over the Brazilian CNPJ registry: business-idea evaluation, CNPJ lookup, advanced search/export,
+      free-text-to-filters IA translation, geolocation, and anonymous monitoring. Mostly no-auth core; paid operations
+      use the x402 (USDC on Base) HTTP 402 payment protocol. OpenAPI 3.1 with 29 documented paths.
+    humanURL: https://radar-cnpj.com/api/
+    baseURL: https://radar-cnpj.com
+    tags:
+      - Business & Company Data
+      - Government/Open Data
+      - Receita Federal
+      - CNPJ
+      - Brazil
+      - Regulatory & Compliance
+      - KYB
+      - Search
+      - Data Enrichment
+      - Geolocation
+      - Monitoring & Alerts
+      - Agent-native
+      - MCP
+      - Micropayments
+      - x402
+    properties:
+      - type: OpenAPI
+        url: https://radar-cnpj.com/openapi.json
+      - type: Documentation
+        url: https://radar-cnpj.com/api/
+      - type: LLMsTxt
+        url: https://radar-cnpj.com/llms.txt
+      - type: LLMsTxt
+        url: https://radar-cnpj.com/llms-full.txt
+      - type: MCPServer
+        url: https://radar-cnpj.com/mcp
+maintainers:
+  - FN: Radar CNPJ
+    url: https://radar-cnpj.com/
+generated:
+  by: apis.io/add
+  model: claude-opus-4-8
+  confidence: 98
+  at: '2026-09-05T11:47:06.889Z'

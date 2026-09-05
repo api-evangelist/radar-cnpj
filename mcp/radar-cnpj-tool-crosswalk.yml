@@ -1,0 +1,108 @@
+generated: '2026-09-05'
+method: derived
+source: >-
+  live tools/list from https://radar-cnpj.com/mcp (probed 2026-09-05) bound to
+  openapi/radar-cnpj-openapi.json operationIds; the provider states the MCP has no backend of its
+  own — every tool is one operation of the same public REST API, and tool names equal operationIds.
+surfaces:
+  openapi:
+    file: openapi/radar-cnpj-openapi.json
+    url: https://radar-cnpj.com/openapi.json
+    gated: false
+  mcp:
+    endpoint: https://radar-cnpj.com/mcp
+    transport: streamable-http
+    gated: false
+coverage:
+  mcp_tools: 13
+  bound: 13
+  mcp_only: 0
+  rest_operations: 29
+  rest_only: 16
+crosswalk:
+  - tool: api_index
+    category: discovery
+    rest: [api_index]
+    binding: 'GET /api/'
+    confidence: high
+  - tool: health
+    category: discovery
+    rest: [health]
+    binding: 'GET /api/health'
+    confidence: high
+  - tool: get_cnpj
+    category: lookup
+    rest: [get_cnpj]
+    binding: 'GET /api/cnpj/{cnpj}'
+    confidence: high
+  - tool: search
+    category: search
+    rest: [search]
+    binding: 'GET /api/busca'
+    confidence: high
+  - tool: suggest
+    category: search
+    rest: [suggest]
+    binding: 'GET /api/sugerir'
+    confidence: high
+  - tool: ref
+    category: reference-data
+    rest: [ref]
+    binding: 'GET /api/ref'
+    confidence: high
+  - tool: avaliar
+    category: evaluation
+    rest: [avaliar]
+    binding: 'POST /api/avaliar'
+    confidence: high
+  - tool: ia_filters
+    category: ai-translation
+    rest: [ia_filters]
+    binding: 'POST /api/ia'
+    confidence: high
+  - tool: local
+    category: geolocation
+    rest: [local]
+    binding: 'GET /api/local'
+    confidence: high
+  - tool: contact
+    category: support
+    rest: [contact]
+    binding: 'POST /api/contato'
+    confidence: high
+    note: agent contact without captcha is a paid x402 call ($0.10 USDC); 402 accepts[] passes through the tool result
+  - tool: monitor_session
+    category: monitoring
+    rest: [monitor_session]
+    binding: 'POST /api/monitor/session'
+    confidence: high
+  - tool: list_watches
+    category: monitoring
+    rest: [list_watches]
+    binding: 'GET /api/me/monitor/watches'
+    confidence: high
+    note: takes session_id as a tool argument; the REST call carries it as the x-radar-session header
+  - tool: add_watch
+    category: monitoring
+    rest: [add_watch]
+    binding: 'POST /api/me/monitor/watch'
+    confidence: high
+    note: first 10 watches per session free, then x402 $0.50 USDC per watch per 30 days
+mcp_only: []
+rest_only:
+  - operationId: get_okf_by_arquivo
+  - operationId: get_well_known_by_arquivo
+  - operationId: get_apis_json
+  - operationId: post_mcp
+  - operationId: get_api_export
+  - operationId: post_api_ia_jobs
+  - operationId: get_api_ia_jobs_by_id
+  - operationId: get_api_municipio_proximo
+  - operationId: put_api_monitor_session_email
+  - operationId: delete_api_me_monitor_watch_by_cnpj
+  - operationId: get_api_me_monitor_alerts
+  - operationId: get_api_monitor_changes_by_cnpj
+  - operationId: post_api_contact
+  - operationId: get_api_metrics
+  - operationId: get_api_credito
+  - operationId: post_api_credito

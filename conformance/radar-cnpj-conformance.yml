@@ -1,0 +1,63 @@
+generated: '2026-09-05'
+method: probed
+source: live probes of radar-cnpj.com discovery surface + openapi/radar-cnpj-openapi.json
+conformance:
+  - id: rfc9727-api-catalog
+    conforms: true
+    evidence: >-
+      https://radar-cnpj.com/.well-known/api-catalog returns 200 with content type
+      application/linkset+json; profile="https://www.rfc-editor.org/info/rfc9727" and a linkset
+      carrying service-desc/service-doc links for the API and MCP (saved verbatim at
+      well-known/radar-cnpj-api-catalog.json)
+  - id: rfc9116-security-txt
+    conforms: true
+    evidence: >-
+      https://radar-cnpj.com/.well-known/security.txt returns 200 with Contact, Expires,
+      Preferred-Languages and Canonical fields (saved at well-known/radar-cnpj-security.txt)
+  - id: apis-json
+    conforms: true
+    evidence: >-
+      APIs.json 0.19 served at https://radar-cnpj.com/apis.json and /.well-known/apis.json
+      (200, application/json; saved at well-known/radar-cnpj-apis-json.json)
+  - id: openapi-3.1
+    conforms: true
+    evidence: 'https://radar-cnpj.com/openapi.json is OpenAPI 3.1.0 with 28 paths / 29 operations'
+  - id: mcp-streamable-http
+    conforms: true
+    evidence: >-
+      POST https://radar-cnpj.com/mcp answers JSON-RPC 2.0 tools/list with 13 tools (probed 200);
+      GET returns a server card declaring transport streamable-http, protocol 2024-11-05; an
+      ed25519 MCP-registry key is published at /.well-known/mcp-registry-auth
+  - id: x402
+    conforms: true
+    evidence: >-
+      Paid operations return HTTP 402 with x402 accepts[] (USDC on Base), retried with the
+      X-PAYMENT header — documented per-operation in the OpenAPI 402 responses, llms.txt and the
+      /api/ quota block
+  - id: llms-txt
+    conforms: true
+    evidence: 'https://radar-cnpj.com/llms.txt and /llms-full.txt both return 200 text/plain'
+  - id: rfc9457
+    conforms: false
+    evidence: >-
+      errors are a custom { ok:false, code, error } JSON envelope, not application/problem+json
+      (documented in the /api/ conventions block)
+  - id: pagination
+    conforms: true
+    evidence: 'GET /api/busca is page-number paginated (page, pageSize, hasMore) per llms-full.txt and the PaginaDeBusca schema'
+  - id: idempotency
+    conforms: false
+    evidence: no idempotency mechanism documented anywhere on the surface (no Idempotency-Key header, no replay guarantee)
+  - id: oauth2
+    conforms: false
+    evidence: >-
+      no OAuth — /.well-known/oauth-authorization-server and /openid-configuration both 404;
+      auth is anonymous sessions, bearer credit tokens and x402 payments
+domain_standard:
+  note: >-
+    The service is built on the Receita Federal CNPJ registry and returns official Brazilian
+    government vocabularies — CNAE activity codes, IBGE municipality codes and natureza juridica
+    codes via GET /api/ref, and CNEFE neighborhood data via GET /api/municipio-proximo. These are
+    the identifier schemes of its market (Brazilian company data) carried in the contract itself
+    (Empresa.cnae, ItemReferencia.codigo). No formal API-shape standard (e.g. OpenBanking Brasil)
+    applies to this KYB/company-data market segment.

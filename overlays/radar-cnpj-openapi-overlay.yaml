@@ -1,0 +1,32 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Radar CNPJ OpenAPI
+  version: 1.0.0
+x-generated: '2026-09-05'
+x-method: generated
+x-source: openapi/radar-cnpj-openapi.json (extends https://radar-cnpj.com/openapi.json, build 2d690e87)
+extends: openapi/radar-cnpj-openapi.json
+actions:
+  - target: $.info
+    update:
+      x-artifacts:
+        authentication: authentication/radar-cnpj-authentication.yml
+        conventions: conventions/radar-cnpj-conventions.yml
+        errors: errors/radar-cnpj-problem-types.yml
+        rate-limits: rate-limits/radar-cnpj-rate-limits.yml
+        plans: plans/radar-cnpj-plans-pricing.yml
+        mcp: mcp/radar-cnpj-mcp.yml
+        tool-crosswalk: mcp/radar-cnpj-tool-crosswalk.yml
+      x-agent-notes: >-
+        Core surface is anonymous; monitor routes need the x-radar-session header from
+        POST /api/monitor/session; paid operations answer HTTP 402 with x402 accepts[]
+        (USDC on Base) — pay and repeat the same call with X-PAYMENT.
+  - target: $.paths['/api/me/monitor/watch'].post
+    update:
+      x-pricing: 'first 10 watches per session free; then $0.50 USDC (x402) per CNPJ per 30 days'
+  - target: $.paths['/api/contato'].post
+    update:
+      x-pricing: 'agent without captcha: $0.10 USDC (x402); after the first send, 429 backoff 60s doubling to 1h (Retry-After)'
+  - target: $.paths['/api/cnpj/{cnpj}'].get
+    update:
+      x-caching: edge-cached 6 hours; data age exposed by GET /api/health (import.dump_date)

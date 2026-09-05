@@ -1,0 +1,62 @@
+generated: '2026-09-05'
+method: derived
+source: >-
+  openapi/radar-cnpj-openapi.json 4xx/5xx responses, enriched from
+  https://radar-cnpj.com/llms-full.txt and the /api/ conventions block
+format: custom
+envelope: '{ ok: false, code, error }'
+note: >-
+  Errors are a custom JSON envelope, not RFC 9457 problem+json. Success bodies always carry
+  ok:true; failure always arrives as an HTTP 4xx/5xx status. 402 responses carry an x402
+  accepts[] array (USDC on Base) instead of a plain error.
+problem_types:
+  - status: 400
+    code: busca_vazia
+    title: Empty search
+    detail: 'GET /api/busca called with neither a term nor a filter'
+  - status: 400
+    code: termo_invalido
+    title: Invalid search term
+    detail: search term outside 2-120 characters
+  - status: 400
+    code: formato_invalido
+    title: Invalid export format
+    detail: 'GET /api/export format outside csv|json'
+  - status: 400
+    title: Invalid CNPJ
+    detail: CNPJ that does not have 14 digits (lookup, watch add/delete, changes)
+  - status: 400
+    title: Invalid input
+    detail: >-
+      missing/oversized text (avaliar 3-400 chars, ia), malformed email, missing required contact
+      field, lat/lon absent or out of range, credit package outside 1|5|10|25, non-JSON body
+  - status: 401
+    title: Unknown session or token
+    detail: >-
+      x-radar-session header absent or unknown (monitor routes); wrong operator token
+      (GET /api/metrics); missing/unknown credit token (GET /api/credito)
+  - status: 402
+    title: Payment required (x402)
+    detail: >-
+      quota exhausted or paid operation unpaid; body carries accepts[] (x402, USDC on Base) —
+      pay and repeat the same call with the X-PAYMENT header. Surfaces on add_watch beyond 10
+      free, agent contact, and credit purchase.
+  - status: 404
+    title: Not found
+    detail: >-
+      CNPJ not in the base; IA job expired or unknown; watch not held by this session; OKF or
+      well-known file outside the published set; CNPJ without change history
+  - status: 405
+    title: Method not allowed
+    detail: 'e.g. only POST on /api/avaliar'
+  - status: 429
+    title: Agent backoff
+    detail: >-
+      contact backoff — first agent send free, then 60s doubling to a 1h ceiling; wait the
+      Retry-After header (POST /api/contato, /api/contact)
+  - status: 503
+    title: Environment secrets missing
+    detail: 'GET /api/metrics without configured secrets'
+  - status: 504
+    title: Synchronous IA path timed out
+    detail: 'POST /api/ia overran — enqueue via POST /api/ia/jobs instead'

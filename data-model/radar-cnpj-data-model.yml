@@ -1,0 +1,93 @@
+generated: '2026-09-05'
+method: derived
+source: openapi/radar-cnpj-openapi.json components.schemas ($ref links + id-reference fields)
+entities:
+  - name: Empresa
+    description: a company record from the Receita Federal CNPJ registry
+    id_field: cnpj (14 digits, also the key for watches and change history)
+    key_fields: [cnpj, cnpjFormatted, razaoSocial, nomeFantasia, situacao, uf, municipio, bairro, cnae]
+  - name: PaginaDeBusca
+    description: paginated search result page
+    key_fields: [page, pageSize, hasMore, results]
+  - name: Export
+    description: capped full export of a search result
+    key_fields: [count, capped, results]
+  - name: Avaliacao
+    description: evaluation of a free-text business idea against the registry
+    key_fields: [texto, cnae, fonte_cnae, filtros, ficha]
+  - name: FichaOferta
+    description: formal-offer profile for an evaluated idea (CNAE mapping, counts, reading)
+  - name: FichaCnpj
+    description: full registration record for one CNPJ
+  - name: ListaReferencia
+    description: official reference vocabulary list (CNAE, municipality, natureza juridica)
+  - name: ItemReferencia
+    description: one reference vocabulary entry
+    key_fields: [codigo, descricao]
+  - name: Sessao
+    description: anonymous monitoring session
+    id_field: session_id (uuid, sent as x-radar-session)
+  - name: Watches
+    description: the CNPJs a session follows, with origin-enforced quota
+    key_fields: [watches, plan, quota, used, suspensas]
+  - name: Alertas
+    description: alerts generated for watched CNPJs
+  - name: HistoricoCnpj
+    description: registration change history for one CNPJ
+    key_fields: [cnpj, changes]
+  - name: SaudeOrigem
+    description: origin health and data age (Receita dump date, per-table counts)
+  - name: Local
+    description: caller's edge-derived city/UF geolocation
+  - name: MunicipioProximo
+    description: nearest IBGE municipality (with CNEFE neighborhood) to a coordinate pair
+  - name: Metricas
+    description: operational metrics (public subset without token; 7-day series with operator token)
+relationships:
+  - from: Avaliacao
+    to: FichaOferta
+    type: has_one
+    via: ficha ($ref)
+  - from: PaginaDeBusca
+    to: Empresa
+    type: has_many
+    via: results[] ($ref)
+  - from: Export
+    to: Empresa
+    type: has_many
+    via: results[] ($ref)
+  - from: ListaReferencia
+    to: ItemReferencia
+    type: has_many
+    via: results[] ($ref)
+  - from: Sessao
+    to: Watches
+    type: has_one
+    via: x-radar-session header (session_id)
+  - from: Watches
+    to: Empresa
+    type: has_many
+    via: cnpj (id reference)
+  - from: Sessao
+    to: Alertas
+    type: has_many
+    via: x-radar-session header (session_id)
+  - from: HistoricoCnpj
+    to: Empresa
+    type: belongs_to
+    via: cnpj (id reference)
+  - from: Avaliacao
+    to: ItemReferencia
+    type: belongs_to
+    via: cnae (CNAE code reference)
+id_domains:
+  - field: cnpj
+    domain: 14-digit Brazilian CNPJ (Receita Federal company identifier)
+  - field: cnae
+    domain: CNAE activity code (official Brazilian classification)
+  - field: municipio
+    domain: IBGE municipality code/name
+  - field: session_id
+    domain: uuid (anonymous, bearer-owned)
+  - field: cred_ token
+    domain: prepaid credit bearer token (cred_ prefix)

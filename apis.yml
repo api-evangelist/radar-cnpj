@@ -1,14 +1,37 @@
 name: Radar CNPJ
-description: >-
-  Brazilian company-data service built on the Receita Federal CNPJ registry. Paste a business idea in plain text to see
-  how many companies already operate in that space, plus CNPJ lookup, advanced search, geolocation, and
-  change-monitoring. Explicitly agent-first, shipping a full stack of machine-readable discovery artifacts including
+description: Brazilian company-data service built on the Receita Federal CNPJ registry. Paste a business idea in
+  plain text to see how many companies already operate in that space, plus CNPJ lookup, advanced search, geolocation,
+  and change-monitoring. Explicitly agent-first, shipping a full stack of machine-readable discovery artifacts including
   OpenAPI, a hosted MCP server, and llms.txt.
 url: https://raw.githubusercontent.com/api-evangelist/radar-cnpj/refs/heads/main/apis.yml
 created: '2026-09-05'
 modified: '2026-09-05'
 specificationVersion: '0.21'
 tags:
+- Business & Company Data
+- Government/Open Data
+- Receita Federal
+- CNPJ
+- Brazil
+- Regulatory & Compliance
+- KYB
+- Search
+- Data Enrichment
+- Geolocation
+- Monitoring & Alerts
+- Agent-native
+- MCP
+- Micropayments
+- x402
+apis:
+- name: Radar CNPJ API
+  description: 'Public REST API over the Brazilian CNPJ registry: business-idea evaluation, CNPJ lookup, advanced
+    search/export, free-text-to-filters IA translation, geolocation, and anonymous monitoring. Mostly no-auth core;
+    paid operations use the x402 (USDC on Base) HTTP 402 payment protocol. OpenAPI 3.1 with 29 documented paths.'
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  image: https://radar-cnpj.com/icon.svg
+  tags:
   - Business & Company Data
   - Government/Open Data
   - Receita Federal
@@ -24,46 +47,76 @@ tags:
   - MCP
   - Micropayments
   - x402
-apis:
-  - name: Radar CNPJ API
-    description: >-
-      Public REST API over the Brazilian CNPJ registry: business-idea evaluation, CNPJ lookup, advanced search/export,
-      free-text-to-filters IA translation, geolocation, and anonymous monitoring. Mostly no-auth core; paid operations
-      use the x402 (USDC on Base) HTTP 402 payment protocol. OpenAPI 3.1 with 29 documented paths.
-    humanURL: https://radar-cnpj.com/api/
-    baseURL: https://radar-cnpj.com
-    tags:
-      - Business & Company Data
-      - Government/Open Data
-      - Receita Federal
-      - CNPJ
-      - Brazil
-      - Regulatory & Compliance
-      - KYB
-      - Search
-      - Data Enrichment
-      - Geolocation
-      - Monitoring & Alerts
-      - Agent-native
-      - MCP
-      - Micropayments
-      - x402
-    properties:
-      - type: OpenAPI
-        url: https://radar-cnpj.com/openapi.json
-      - type: Documentation
-        url: https://radar-cnpj.com/api/
-      - type: LLMsTxt
-        url: https://radar-cnpj.com/llms.txt
-      - type: LLMsTxt
-        url: https://radar-cnpj.com/llms-full.txt
-      - type: MCPServer
-        url: https://radar-cnpj.com/mcp
+  properties:
+  - type: OpenAPI
+    url: https://radar-cnpj.com/openapi.json
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: MCPServer
+    url: https://radar-cnpj.com/mcp
+  - type: OpenAPI
+    url: openapi/radar-cnpj-openapi.json
+  - type: MCPServer
+    url: mcp/radar-cnpj-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Overlay
+    url: overlays/radar-cnpj-openapi-overlay.yaml
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
 maintainers:
-  - FN: Radar CNPJ
-    url: https://radar-cnpj.com/
+- FN: Radar CNPJ
+  url: https://radar-cnpj.com/
+  email: contato@radar-cnpj.com
+image: https://radar-cnpj.com/icon.svg
 generated:
   by: apis.io/add
   model: claude-opus-4-8
   confidence: 98
   at: '2026-09-05T11:47:06.889Z'
+common:
+- type: Website
+  url: https://radar-cnpj.com
+- type: VulnerabilityDisclosure
+  url: security/radar-cnpj-vulnerability-disclosure.yml
+- type: Security
+  url: security/radar-cnpj-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/radar-cnpj-domain-security.yml
+- type: WellKnown
+  url: well-known/radar-cnpj-well-known.yml
+- type: SecurityTxt
+  url: well-known/radar-cnpj-security.txt
+- type: AgentSkill
+  url: skills/_index.yml
+- type: TermsOfService
+  url: https://radar-cnpj.com/termos
+- type: PrivacyPolicy
+  url: https://radar-cnpj.com/privacidade
+- type: X-OKF
+  url: okf/radar-cnpj-okf-index.md
+x-enrichment:
+  date: '2026-09-05'
+  status: enriched
+  artifacts_added: 30
+  pass: local-v3

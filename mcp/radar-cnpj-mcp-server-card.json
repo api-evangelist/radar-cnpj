@@ -1,0 +1,12 @@
+{
+    "transport": "streamable-http",
+    "protocol_version": "2024-11-05",
+    "endpoint": "https://radar-cnpj.com/mcp",
+    "server": {
+        "name": "Radar CNPJ",
+        "version": "2d690e87"
+    },
+    "tools": 13,
+    "usage": "POST https://radar-cnpj.com/mcp com JSON-RPC 2.0 (initialize, tools/list, tools/call).",
+    "api_index": "https://radar-cnpj.com/api/"
+}

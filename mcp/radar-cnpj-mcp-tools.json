@@ -1,0 +1,215 @@
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+        "tools": [
+            {
+                "name": "api_index",
+                "description": "\u00cdndice da API Radar CNPJ (radar-cnpj.com).",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            },
+            {
+                "name": "health",
+                "description": "Health da base.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            },
+            {
+                "name": "get_cnpj",
+                "description": "Ficha de empresa por CNPJ (14 d\u00edgitos).",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "cnpj": {
+                            "type": "string",
+                            "description": "14 d\u00edgitos"
+                        }
+                    },
+                    "required": [
+                        "cnpj"
+                    ]
+                }
+            },
+            {
+                "name": "search",
+                "description": "Busca empresas (q e/ou filtros f=JSON).",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "q": {
+                            "type": "string"
+                        },
+                        "f": {
+                            "type": "string",
+                            "description": "JSON string de filtros"
+                        },
+                        "page": {
+                            "type": "number"
+                        },
+                        "pageSize": {
+                            "type": "number"
+                        },
+                        "uf": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            {
+                "name": "suggest",
+                "description": "Autocomplete.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "q": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "q"
+                    ]
+                }
+            },
+            {
+                "name": "ref",
+                "description": "Ref CNAE/munic\u00edpio/natureza.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "tipo": {
+                            "type": "string",
+                            "description": "cnae|municipio|natureza|\u2026"
+                        },
+                        "q": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "tipo"
+                    ]
+                }
+            },
+            {
+                "name": "avaliar",
+                "description": "Avalia uma ideia de neg\u00f3cio contra a base da Receita (CNAE + lugar \u2192 contagem de ativas). N\u00e3o estima busca no Google. POST /api/avaliar.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "texto": {
+                            "type": "string",
+                            "description": "Ideia em portugu\u00eas, 3\u2013400 caracteres."
+                        },
+                        "uf": {
+                            "type": "string",
+                            "description": "Hint de UF se a frase n\u00e3o tiver cidade."
+                        },
+                        "municipio": {
+                            "type": "number",
+                            "description": "Hint de c\u00f3digo de munic\u00edpio da Receita."
+                        }
+                    },
+                    "required": [
+                        "texto"
+                    ]
+                }
+            },
+            {
+                "name": "ia_filters",
+                "description": "Texto natural \u2192 filtros (POST /api/ia).",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "texto": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "texto"
+                    ]
+                }
+            },
+            {
+                "name": "local",
+                "description": "Geo de borda do visitante (cidade/UF).",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            },
+            {
+                "name": "contact",
+                "description": "Contato. Agente sem captcha \u2192 402 $0.10 x402. Ap\u00f3s o 1\u00ba envio: 429 + Retry-After (backoff).",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "nome": {
+                            "type": "string"
+                        },
+                        "email": {
+                            "type": "string"
+                        },
+                        "mensagem": {
+                            "type": "string"
+                        },
+                        "aberto_em": {
+                            "type": "number"
+                        }
+                    },
+                    "required": [
+                        "nome",
+                        "email",
+                        "mensagem",
+                        "aberto_em"
+                    ]
+                }
+            },
+            {
+                "name": "monitor_session",
+                "description": "Cria sess\u00e3o an\u00f4nima de monitoramento.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            },
+            {
+                "name": "list_watches",
+                "description": "Lista watches da sess\u00e3o.",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "session_id": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "session_id"
+                    ]
+                }
+            },
+            {
+                "name": "add_watch",
+                "description": "Adiciona CNPJ aos watches da sess\u00e3o. Os primeiros 10 s\u00e3o gr\u00e1tis; depois volta 402 (x402, slot de 30 dias).",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "session_id": {
+                            "type": "string"
+                        },
+                        "cnpj": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "session_id",
+                        "cnpj"
+                    ]
+                }
+            }
+        ]
+    }
+}

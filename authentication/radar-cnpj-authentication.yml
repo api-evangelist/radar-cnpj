@@ -1,0 +1,45 @@
+generated: '2026-09-05'
+method: searched
+source: https://radar-cnpj.com/api/ (self-describing auth block) + https://radar-cnpj.com/llms-full.txt
+docs: https://radar-cnpj.com/llms-full.txt
+note: >-
+  The OpenAPI declares no securitySchemes; the auth model is documented in the machine-readable
+  /api/ index and llms-full.txt. The core surface (evaluation, lookup, search, geolocation) is
+  anonymous. Paid operations use the x402 HTTP 402 payment protocol (USDC on Base) via the
+  X-PAYMENT header rather than accounts or API keys.
+schemes:
+  - name: none
+    type: none
+    description: >-
+      Public, no credential. Applies to evaluation (POST /api/avaliar), CNPJ lookup, search,
+      export, autocomplete, reference vocabularies, geolocation, discovery documents and the MCP
+      endpoint. Some origin routes may be geo-restricted to Brazil.
+  - name: session
+    type: apiKey
+    in: header
+    header: x-radar-session
+    description: >-
+      Anonymous monitoring session: POST /api/monitor/session returns a uuid sent as the
+      x-radar-session header on all monitor routes. There is no login — whoever holds the uuid
+      owns the session, so it must be treated as a secret.
+  - name: credito
+    type: http
+    scheme: bearer
+    header: 'Authorization: Bearer cred_… (or X-Credito)'
+    description: >-
+      Prepaid credit token: POST /api/credito is paid once via x402 and returns a bearer token
+      (cred_ prefix) that debits any paid API in the house. Shown once, not recoverable; not an
+      account — a bearer of balance.
+  - name: token
+    type: http
+    scheme: bearer
+    description: >-
+      Operator metrics token (METRICS_TOKEN) as Authorization Bearer on GET /api/metrics for the
+      full 7-day series; without it the endpoint returns a public subset.
+  - name: x402
+    type: payment
+    header: X-PAYMENT
+    description: >-
+      x402 micropayment protocol: exhausted quota or a paid operation returns HTTP 402 with
+      accepts[] (USDC on Base); the client pays and repeats the same call with the X-PAYMENT
+      header. Prices: $0.50/watch/30 days beyond the free 10, $0.10 per agent contact.

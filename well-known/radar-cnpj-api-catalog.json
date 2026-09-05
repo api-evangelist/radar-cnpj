@@ -1,0 +1,76 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://radar-cnpj.com/.well-known/api-catalog",
+      "item": [
+        {
+          "href": "https://radar-cnpj.com/api/"
+        },
+        {
+          "href": "https://radar-cnpj.com/mcp"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://radar-cnpj.com/apis.json",
+          "type": "application/json",
+          "title": "APIs.json"
+        }
+      ]
+    },
+    {
+      "anchor": "https://radar-cnpj.com/api/",
+      "service-desc": [
+        {
+          "href": "https://radar-cnpj.com/openapi.json",
+          "type": "application/json",
+          "title": "OpenAPI 3"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://radar-cnpj.com/llms.txt",
+          "type": "text/plain",
+          "title": "Guia para agentes de IA"
+        },
+        {
+          "href": "https://radar-cnpj.com/llms-full.txt",
+          "type": "text/plain",
+          "title": "Referência completa da API"
+        },
+        {
+          "href": "https://radar-cnpj.com/okf/index.md",
+          "type": "text/markdown",
+          "title": "Bundle OKF"
+        }
+      ]
+    },
+    {
+      "anchor": "https://radar-cnpj.com/mcp",
+      "service-desc": [
+        {
+          "href": "https://radar-cnpj.com/mcp",
+          "type": "application/json",
+          "title": "MCP (streamable HTTP)"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://radar-cnpj.com/llms.txt",
+          "type": "text/plain",
+          "title": "Guia para agentes de IA"
+        },
+        {
+          "href": "https://radar-cnpj.com/llms-full.txt",
+          "type": "text/plain",
+          "title": "Referência completa da API"
+        },
+        {
+          "href": "https://radar-cnpj.com/okf/index.md",
+          "type": "text/markdown",
+          "title": "Bundle OKF"
+        }
+      ]
+    }
+  ]
+}

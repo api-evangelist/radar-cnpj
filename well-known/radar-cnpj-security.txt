@@ -1,0 +1,4 @@
+Contact: mailto:contato@radar-cnpj.com
+Expires: 2027-09-05T00:00:00Z
+Preferred-Languages: pt, en
+Canonical: https://radar-cnpj.com/.well-known/security.txt

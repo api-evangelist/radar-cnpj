@@ -1,0 +1,65 @@
+generated: '2026-09-05'
+method: probed
+source: live probes of radar-cnpj.com, www.radar-cnpj.com and api.radar-cnpj.com
+note: >-
+  radar-cnpj.com serves four real well-known documents: security.txt (RFC 9116), api-catalog
+  (RFC 9727 linkset, application/linkset+json), apis.json (APIs.json 0.19, also at /apis.json),
+  and mcp-registry-auth (ed25519 key for the official MCP registry). www mirrors the same
+  documents. api.radar-cnpj.com (the origin behind the Cloudflare Worker proxy) serves none and
+  is documented by the provider as not the integration surface. OAuth/OIDC discovery, agent
+  cards and ai-plugin.json all return real 404s.
+hosts:
+  - host: radar-cnpj.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        file: well-known/radar-cnpj-security.txt
+      - path: /.well-known/api-catalog
+        status: 200
+        file: well-known/radar-cnpj-api-catalog.json
+        content_type: application/linkset+json; profile="https://www.rfc-editor.org/info/rfc9727"
+      - path: /.well-known/apis.json
+        status: 200
+        file: well-known/radar-cnpj-apis-json.json
+      - path: /.well-known/mcp-registry-auth
+        status: 200
+        file: well-known/radar-cnpj-mcp-registry-auth.txt
+      - path: /apis.json
+        status: 200
+        file: well-known/radar-cnpj-apis-json.json
+        note: same document as /.well-known/apis.json
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: www.radar-cnpj.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        note: mirrors radar-cnpj.com; not saved separately
+      - path: /.well-known/api-catalog
+        status: 200
+        note: mirrors radar-cnpj.com; not saved separately
+      - path: /.well-known/apis.json
+        status: 200
+        note: mirrors radar-cnpj.com; not saved separately
+      - path: /.well-known/agent-card.json
+        status: 404
+  - host: api.radar-cnpj.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/apis.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404

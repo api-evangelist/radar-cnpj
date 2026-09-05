@@ -1,0 +1,29 @@
+generated: '2026-09-05'
+method: searched
+source: https://radar-cnpj.com/llms.txt (Cota section) + https://radar-cnpj.com/llms-full.txt + https://radar-cnpj.com/api/
+limit_count: 3
+headers:
+  - Retry-After
+exhaustion_statuses: [429, 402]
+limits:
+  - scope: per-session
+    surface: 'POST /api/me/monitor/watch'
+    limit: 10 free watches per anonymous monitoring session
+    window: session lifetime
+    on_exhaustion: 'HTTP 402 with x402 accepts[] — $0.50 USDC per additional watch per 30 days; pay and repeat with X-PAYMENT'
+  - scope: per-agent
+    surface: 'POST /api/contato, POST /api/contact'
+    limit: first agent send free
+    window: exponential backoff, 60s doubling to a 1h ceiling
+    burst: 1
+    on_exhaustion: 'HTTP 429 with Retry-After header (or pay $0.10 USDC via x402 to skip the captcha path)'
+  - scope: edge-cache
+    surface: 'GET /api/cnpj/*'
+    limit: no request quota; responses edge-cached 6 hours
+    window: 6h
+    note: the Receita dump changes on a weeks cadence, so identical lookups are served from the Cloudflare edge
+note: >-
+  No X-RateLimit-*/RateLimit-* headers are documented; the runtime signals are Retry-After on
+  429 and the x402 accepts[] body on 402. Free evaluation/lookup/search endpoints are documented
+  as uncapped. The live numbers are published machine-readably in the quota block of
+  GET https://radar-cnpj.com/api/.

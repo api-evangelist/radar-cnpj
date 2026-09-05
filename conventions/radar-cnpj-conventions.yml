@@ -1,0 +1,72 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  https://radar-cnpj.com/api/ (conventions block) + https://radar-cnpj.com/llms.txt +
+  https://radar-cnpj.com/llms-full.txt; cross-derived from openapi/radar-cnpj-openapi.json
+auth:
+  style: mostly anonymous; header-based session (x-radar-session), prepaid bearer credit token, x402 X-PAYMENT for paid calls
+  see: authentication/radar-cnpj-authentication.yml
+error_envelope:
+  shape: '{ ok: false, code, error }'
+  format: custom JSON envelope (not RFC 9457 problem+json)
+  note: 'success bodies carry ok: true; failures come as HTTP 4xx/5xx status, never ok:false with 200'
+  see: errors/radar-cnpj-problem-types.yml
+pagination:
+  style: page-number
+  params: [page, pageSize]
+  response_fields: [page, pageSize, hasMore, results]
+  applies_to: 'GET /api/busca (search); GET /api/export returns the full capped result set with count/capped'
+versioning:
+  scheme: continuous deployment; the published commit hash is exposed as info.version in the OpenAPI and build in GET /api/
+  current_build: 2d690e87
+data_freshness:
+  note: >-
+    GET /api/health exposes import.dump_date and per-table counts — the age of the underlying
+    Receita Federal dump (weeks, not minutes). CNPJ lookups are edge-cached for 6 hours.
+caching:
+  edge_cache: '/api/cnpj/* cached 6h at the Cloudflare edge; /api/local and /api/contato never cached; /api/metrics (public subset) cached 5 min'
+rate_limit_signaling:
+  headers: [Retry-After]
+  statuses: [429, 402]
+  note: 'agent contact backoff: first send free, then 60s doubling to a 1h ceiling in Retry-After; quota exhaustion returns 402 with x402 accepts[]'
+  see: rate-limits/radar-cnpj-rate-limits.yml
+payments:
+  protocol: x402 (HTTP 402 + accepts[], USDC on Base)
+  retry_semantics: pay and repeat the same call with the X-PAYMENT header
+  prepaid: 'POST /api/credito buys a cred_ bearer token that debits any paid API'
+cors:
+  note: documented in the /api/ conventions block as part of the JSON conventions ("Formato de erro, CORS, x402")
+parity_rule:
+  note: >-
+    provider-published discipline: any UI/API change must update apidocs, the internal skill,
+    the MCP and llms.txt in the same PR ("paridade UI↔API")
+idempotency:
+  coverage: none
+  note: >-
+    No idempotency mechanism is documented anywhere on the surface — no Idempotency-Key header,
+    no replay guarantee on the write operations (avaliar, ia jobs, monitor session/watch,
+    contato, credito). The x402 "pay and repeat the same call" flow is a payment retry, not an
+    idempotent replay guarantee. Duplicate add_watch on the same CNPJ is naturally convergent
+    (the watch key is the CNPJ itself) but this is not stated as a guarantee.
+dry_run: na
+reversibility:
+  status: documented
+  note: >-
+    The only mutating surface with real state is monitoring. add_watch (POST /api/me/monitor/watch)
+    is reversed by DELETE /api/me/monitor/watch/{cnpj} — the key is the CNPJ itself, not an id
+    (documented in llms.txt and llms-full.txt). No reversal window is stated, and no refund of a
+    paid watch ($0.50/30 days) or of prepaid credit (POST /api/credito — token shown once, not
+    recoverable) is documented, so paid amounts should be treated as non-refundable. Contact
+    (POST /api/contato) and idea evaluation are fire-and-forget/read-only respectively.
+  writes:
+    - operation: add_watch
+      reversal: delete_api_me_monitor_watch_by_cnpj
+      window: not stated
+      docs: https://radar-cnpj.com/llms.txt
+    - operation: post_api_credito
+      reversal: none documented
+      note: credit token is a bearer of balance, shown once; no refund path published
+    - operation: contact
+      reversal: none (message sent)
+request_tracing: not documented
+field_expansion: not documented

@@ -1,0 +1,22 @@
+generated: '2026-09-05'
+method: searched
+source: https://radar-cnpj.com/api/ + https://radar-cnpj.com/llms-full.txt + openapi/radar-cnpj-openapi.json
+versioning:
+  scheme: continuous deployment, no versioned API paths
+  current: 2d690e87
+  note: >-
+    The deployed commit hash is exposed as info.version in the OpenAPI and as build in GET /api/.
+    No /v1-style path versioning; the provider's published parity rule requires apidocs, skill,
+    MCP and llms.txt to update in the same PR as any API change.
+deprecation:
+  policy: none published
+  deprecated_operations: []
+  note: no deprecated operations in the OpenAPI; no Deprecation/Sunset (RFC 8594) header usage documented
+status_page: none published
+sla: none published
+health:
+  endpoint: https://radar-cnpj.com/api/health
+  note: >-
+    public health endpoint exposing origin/db state and data age — import.dump_date and
+    per-table counts of the Receita Federal dump
+changelog: none published (no dated changelog; the build hash is the only version signal)

@@ -1,0 +1,33 @@
+generated: '2026-09-05'
+method: searched
+source: https://radar-cnpj.com/api/ (quota block) + https://radar-cnpj.com/llms.txt
+plan_count: 2
+model: free core + x402 micropayments (USDC on Base); no accounts, no subscription tiers
+plans:
+  - name: Free
+    price: 0
+    currency: USD
+    billing_period: none
+    included:
+      - feature: idea evaluation (POST /api/avaliar)
+        quota: unlimited
+      - feature: CNPJ lookup and search
+        quota: unlimited (6h edge cache)
+      - feature: CNPJ monitoring
+        quota: 10 watches per anonymous session (quota enforced by the origin, reported in GET /api/me/monitor/watches)
+      - feature: agent contact
+        quota: first send free, then 60s-doubling backoff to 1h (Retry-After)
+  - name: Pay-per-use (x402)
+    price: metered
+    currency: USDC (on Base)
+    billing_period: per request
+    prices:
+      - item: monitoring watch beyond the 10 free, per CNPJ per 30 days
+        price_usd: 0.50
+      - item: agent contact without captcha (POST /api/contato)
+        price_usd: 0.10
+      - item: prepaid credit reload (POST /api/credito, packages of 1, 5, 10 or 25 USD)
+        price_usd: 'package amount'
+    note: >-
+      Overage arrives as HTTP 402 with x402 accepts[]; pay and repeat the same call with
+      X-PAYMENT, or hold a prepaid cred_ bearer token that debits any paid API.

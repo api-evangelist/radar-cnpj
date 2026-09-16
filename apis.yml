@@ -19,55 +19,767 @@ tags:
 - Data Enrichment
 - Geolocation
 - Monitoring & Alerts
+- agent-native
+- MCP
+- Micropayments
+- x402
+tags_raw:
+- Business & Company Data
+- Government/Open Data
+- Receita Federal
+- CNPJ
+- Brazil
+- Regulatory & Compliance
+- KYB
+- Search
+- Data Enrichment
+- Geolocation
+- Monitoring & Alerts
 - Agent-native
 - MCP
 - Micropayments
 - x402
 apis:
-- name: Radar CNPJ API
-  description: 'Public REST API over the Brazilian CNPJ registry: business-idea evaluation, CNPJ lookup, advanced
-    search/export, free-text-to-filters IA translation, geolocation, and anonymous monitoring. Mostly no-auth core;
-    paid operations use the x402 (USDC on Base) HTTP 402 payment protocol. OpenAPI 3.1 with 29 documented paths.'
+- aid: radar-cnpj:radar-cnpj-apis-json-api
+  name: Radar CNPJ Apis.json API
+  description: The Apis.json API from Radar CNPJ — 1 operation(s) for apis.json.
   humanURL: https://radar-cnpj.com/api/
   baseURL: https://radar-cnpj.com
-  image: https://radar-cnpj.com/icon.svg
   tags:
-  - Business & Company Data
-  - Government/Open Data
-  - Receita Federal
-  - CNPJ
-  - Brazil
-  - Regulatory & Compliance
-  - KYB
-  - Search
-  - Data Enrichment
-  - Geolocation
-  - Monitoring & Alerts
-  - Agent-native
-  - MCP
-  - Micropayments
-  - x402
+  - Apis.json
   properties:
   - type: OpenAPI
-    url: https://radar-cnpj.com/openapi.json
+    url: openapi/radar-cnpj-apis-json-api-openapi.yml
   - type: Documentation
     url: https://radar-cnpj.com/api/
   - type: LLMsTxt
     url: https://radar-cnpj.com/llms.txt
   - type: LLMsTxt
     url: https://radar-cnpj.com/llms-full.txt
-  - type: MCPServer
-    url: https://radar-cnpj.com/mcp
-  - type: OpenAPI
-    url: openapi/radar-cnpj-openapi.json
-  - type: MCPServer
-    url: mcp/radar-cnpj-mcp.yml
   - type: ToolCrosswalk
     url: mcp/radar-cnpj-tool-crosswalk.yml
   - type: LLMsTxt
     url: llms/radar-cnpj-llms.txt
-  - type: Overlay
-    url: overlays/radar-cnpj-openapi-overlay.yaml
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-avaliar-api
+  name: Radar CNPJ Avaliar API
+  description: The Avaliar API from Radar CNPJ — 1 operation(s) for avaliar.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Avaliar
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-avaliar-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-busca-api
+  name: Radar CNPJ Busca API
+  description: The Busca API from Radar CNPJ — 1 operation(s) for busca.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Busca
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-busca-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-cnpj-api
+  name: Radar CNPJ Cnpj API
+  description: The Cnpj API from Radar CNPJ — 1 operation(s) for cnpj.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Cnpj
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-cnpj-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-contact-api
+  name: Radar CNPJ Contact API
+  description: The Contact API from Radar CNPJ — 1 operation(s) for contact.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Contact
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-contact-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-contato-api
+  name: Radar CNPJ Contato API
+  description: The Contato API from Radar CNPJ — 1 operation(s) for contato.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Contato
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-contato-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-credito-api
+  name: Radar CNPJ Credito API
+  description: The Credito API from Radar CNPJ — 1 operation(s) for credito.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Credito
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-credito-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-export-api
+  name: Radar CNPJ Export API
+  description: The Export API from Radar CNPJ — 1 operation(s) for export.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Export
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-export-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-health-api
+  name: Radar CNPJ Health API
+  description: The Health API from Radar CNPJ — 1 operation(s) for health.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Health
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-health-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-ia-api
+  name: Radar CNPJ Ia API
+  description: The Ia API from Radar CNPJ — 3 operation(s) for ia.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Ia
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-ia-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-local-api
+  name: Radar CNPJ Local API
+  description: The Local API from Radar CNPJ — 1 operation(s) for local.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Local
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-local-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-mcp-api
+  name: Radar CNPJ MCP API
+  description: The Mcp API from Radar CNPJ — 1 operation(s) for mcp.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Mcp
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-mcp-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-me-api
+  name: Radar CNPJ Me API
+  description: The Me API from Radar CNPJ — 4 operation(s) for me.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Me
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-me-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-metrics-api
+  name: Radar CNPJ Metrics API
+  description: The Metrics API from Radar CNPJ — 1 operation(s) for metrics.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Metrics
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-metrics-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-monitor-api
+  name: Radar CNPJ Monitor API
+  description: The Monitor API from Radar CNPJ — 3 operation(s) for monitor.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Monitor
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-monitor-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-municipio-proximo-api
+  name: Radar CNPJ Municipio Proximo API
+  description: The Municipio Proximo API from Radar CNPJ — 1 operation(s) for municipio proximo.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Municipio Proximo
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-municipio-proximo-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-okf-api
+  name: Radar CNPJ Okf API
+  description: The Okf API from Radar CNPJ — 1 operation(s) for okf.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Okf
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-okf-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-radar-cnpj-api
+  name: Radar CNPJ Radar CNPJ API
+  description: The Radar CNPJ API from Radar CNPJ — 1 operation(s) for radar cnpj.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Radar CNPJ
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-radar-cnpj-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-ref-api
+  name: Radar CNPJ Ref API
+  description: The Ref API from Radar CNPJ — 1 operation(s) for ref.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Ref
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-ref-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-sugerir-api
+  name: Radar CNPJ Sugerir API
+  description: The Sugerir API from Radar CNPJ — 1 operation(s) for sugerir.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - Sugerir
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-sugerir-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
+  - type: Authentication
+    url: authentication/radar-cnpj-authentication.yml
+  - type: Conventions
+    url: conventions/radar-cnpj-conventions.yml
+  - type: ErrorCatalog
+    url: errors/radar-cnpj-problem-types.yml
+  - type: DataModel
+    url: data-model/radar-cnpj-data-model.yml
+  - type: RateLimits
+    url: rate-limits/radar-cnpj-rate-limits.yml
+  - type: Plans
+    url: plans/radar-cnpj-plans-pricing.yml
+  - type: Lifecycle
+    url: lifecycle/radar-cnpj-lifecycle.yml
+  - type: Conformance
+    url: conformance/radar-cnpj-conformance.yml
+- aid: radar-cnpj:radar-cnpj-well-known-api
+  name: Radar CNPJ .well Known API
+  description: The .well Known API from Radar CNPJ — 1 operation(s) for .well known.
+  humanURL: https://radar-cnpj.com/api/
+  baseURL: https://radar-cnpj.com
+  tags:
+  - .well Known
+  properties:
+  - type: OpenAPI
+    url: openapi/radar-cnpj-well-known-api-openapi.yml
+  - type: Documentation
+    url: https://radar-cnpj.com/api/
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms.txt
+  - type: LLMsTxt
+    url: https://radar-cnpj.com/llms-full.txt
+  - type: ToolCrosswalk
+    url: mcp/radar-cnpj-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/radar-cnpj-llms.txt
   - type: Authentication
     url: authentication/radar-cnpj-authentication.yml
   - type: Conventions
@@ -95,6 +807,12 @@ generated:
   confidence: 98
   at: '2026-09-05T11:47:06.889Z'
 common:
+- type: MCPServer
+  url: https://radar-cnpj.com/mcp
+- type: MCPServer
+  url: mcp/radar-cnpj-mcp.yml
+- type: Overlay
+  url: overlays/radar-cnpj-openapi-overlay.yaml
 - type: Website
   url: https://radar-cnpj.com
 - type: VulnerabilityDisclosure

@@ -46,6 +46,8 @@ apis:
   humanURL: https://radar-cnpj.com/api/
   baseURL: https://radar-cnpj.com
   tags:
+  - APIs.json
+  tags_raw:
   - Apis.json
   properties:
   - type: OpenAPI
@@ -154,6 +156,8 @@ apis:
   humanURL: https://radar-cnpj.com/api/
   baseURL: https://radar-cnpj.com
   tags:
+  - CNPJ
+  tags_raw:
   - Cnpj
   properties:
   - type: OpenAPI
@@ -442,6 +446,8 @@ apis:
   humanURL: https://radar-cnpj.com/api/
   baseURL: https://radar-cnpj.com
   tags:
+  - MCP
+  tags_raw:
   - Mcp
   properties:
   - type: OpenAPI
@@ -550,6 +556,8 @@ apis:
   humanURL: https://radar-cnpj.com/api/
   baseURL: https://radar-cnpj.com
   tags:
+  - Monitors
+  tags_raw:
   - Monitor
   properties:
   - type: OpenAPI

@@ -1,0 +1,129 @@
+openapi: 3.2.0
+info:
+  title: Radar CNPJ Ia API
+  version: 2d690e87
+  description: radar-cnpj.com — índice GET /api/.
+servers:
+- url: https://radar-cnpj.com
+tags:
+- name: Ia
+paths:
+  /api/ia:
+    post:
+      operationId: ia_filters
+      summary: Transforma um texto livre nos filtros normalizados que a busca aceita
+      description: 'Caminho síncrono: leva de 18 a 20 segundos. Quando estoura o tempo, use `POST /api/ia/jobs`.
+
+        Devolve: { ok, filtros }'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                texto:
+                  type: string
+                  description: A descrição em linguagem natural do que você procura.
+              required:
+              - texto
+            example:
+              texto: padarias em SP com MEI
+      responses:
+        '200':
+          description: '{ ok, filtros }'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    description: Sempre `true` quando a IA respondeu.
+                  filtros:
+                    type: array
+                    items:
+                      type: object
+                    description: Os filtros normalizados, prontos para virar o `f` de `GET /api/busca`.
+                required:
+                - ok
+                - filtros
+        '400':
+          description: Texto ausente ou fora do tamanho aceito.
+        '504':
+          description: O caminho síncrono estourou — enfileire em `POST /api/ia/jobs`.
+      tags:
+      - Ia
+  /api/ia/jobs:
+    post:
+      operationId: post_api_ia_jobs
+      summary: Enfileira a mesma tradução de texto para filtros, quando a síncrona não cabe no…
+      description: 'Devolve: { job_id, eta }'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                texto:
+                  type: string
+                  description: A descrição em linguagem natural do que você procura.
+              required:
+              - texto
+            example:
+              texto: padarias em SP com MEI
+      responses:
+        '200':
+          description: '{ job_id, eta }'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    description: ID do trabalho, para consultar em `GET /api/ia/jobs/:id`.
+                  eta:
+                    type: integer
+                    description: Estimativa de segundos até ficar pronto.
+                required:
+                - job_id
+                - eta
+        '400':
+          description: Texto ausente ou fora do tamanho aceito.
+      tags:
+      - Ia
+  /api/ia/jobs/{id}:
+    get:
+      operationId: get_api_ia_jobs_by_id
+      summary: Consulta o trabalho de IA enfileirado; quando pronto, devolve os filtros
+      description: 'Devolve: { status, filtros? }'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '{ status, filtros? }'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado do trabalho.
+                  filtros:
+                    type: array
+                    items:
+                      type: object
+                    description: Os filtros normalizados; só quando `status` é `done`.
+                required:
+                - status
+        '404':
+          description: Trabalho não existe ou já expirou.
+      tags:
+      - Ia

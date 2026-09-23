@@ -1,0 +1,198 @@
+openapi: 3.2.0
+info:
+  title: Radar CNPJ Me API
+  version: 2d690e87
+  description: radar-cnpj.com — índice GET /api/.
+servers:
+- url: https://radar-cnpj.com
+tags:
+- name: Me
+paths:
+  /api/me/monitor/watches:
+    get:
+      operationId: list_watches
+      summary: Os CNPJs que esta sessão acompanha, com a cota aplicada pela origem
+      description: 'Quem decide a cota é a origem (`api.radar-cnpj.com`), que tem banco e transação — este Worker só reage ao 402 dela. Por isso `quota` e `plan` vêm na resposta, e não de uma variável local.
+
+        Devolve: { ok, watches, plan, quota, used, suspensas }'
+      parameters:
+      - name: x-radar-session
+        in: header
+        required: true
+        schema:
+          type: string
+        description: UUID da sessão de monitoramento.
+      responses:
+        '200':
+          description: '{ ok, watches, plan, quota, used, suspensas }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Watches'
+        '401':
+          description: Header `x-radar-session` ausente ou desconhecido.
+      tags:
+      - Me
+  /api/me/monitor/watch:
+    post:
+      operationId: add_watch
+      summary: Passa a acompanhar um CNPJ.
+      description: 'Quem cobra é a origem: ela responde **402 com `accepts[]`** e este Worker repassa. Pague e repita a mesma chamada com `X-PAYMENT`.
+
+        Devolve: { ok }'
+      parameters:
+      - name: x-radar-session
+        in: header
+        required: true
+        schema:
+          type: string
+        description: UUID da sessão de monitoramento.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cnpj:
+                  type: string
+                  description: CNPJ a acompanhar, 14 dígitos sem pontuação.
+              required:
+              - cnpj
+            example:
+              cnpj: '00000000000000'
+      responses:
+        '200':
+          description: '{ ok }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '400':
+          description: CNPJ que não tem 14 dígitos.
+        '401':
+          description: Sessão ausente ou desconhecida.
+        '402':
+          description: 'Cota estourada. A resposta traz `accepts[]` (x402, USDC na Base): pague e repita a mesma chamada com `X-PAYMENT`.'
+      tags:
+      - Me
+  /api/me/monitor/watch/{cnpj}:
+    delete:
+      operationId: delete_api_me_monitor_watch_by_cnpj
+      summary: Para de acompanhar um CNPJ. A chave é o próprio CNPJ, não um id
+      description: 'Devolve: { ok }'
+      parameters:
+      - name: cnpj
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: x-radar-session
+        in: header
+        required: true
+        schema:
+          type: string
+        description: UUID da sessão de monitoramento.
+      responses:
+        '200':
+          description: '{ ok }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '401':
+          description: Sessão ausente ou desconhecida.
+        '404':
+          description: Este CNPJ não está sendo acompanhado por esta sessão.
+      tags:
+      - Me
+  /api/me/monitor/alerts:
+    get:
+      operationId: get_api_me_monitor_alerts
+      summary: Os alertas gerados para os CNPJs que esta sessão acompanha
+      description: '`retidos` traz o que existe e não foi entregue — normalmente por não haver e-mail confirmado na sessão.
+
+        Devolve: { ok, alerts, retidos }'
+      parameters:
+      - name: x-radar-session
+        in: header
+        required: true
+        schema:
+          type: string
+        description: UUID da sessão de monitoramento.
+      responses:
+        '200':
+          description: '{ ok, alerts, retidos }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alertas'
+        '401':
+          description: Sessão ausente ou desconhecida.
+      tags:
+      - Me
+components:
+  schemas:
+    Ok:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true` — a falha vem como status 4xx/5xx, não como `ok:false`.
+      required:
+      - ok
+      description: Confirmação de escrita que não tem corpo próprio a devolver.
+    Alertas:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true`.
+        alerts:
+          type: array
+          items:
+            type: object
+          description: Um item por alteração detectada num CNPJ acompanhado.
+        retidos:
+          type: array
+          items:
+            type: object
+          description: Alertas que existem mas não foram entregues — normalmente por falta de e-mail confirmado.
+      required:
+      - ok
+      - alerts
+      - retidos
+      description: Os alertas gerados para os watches desta sessão.
+    Watches:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true`.
+        watches:
+          type: array
+          items:
+            type: object
+          description: Um item por CNPJ acompanhado.
+        plan:
+          type: string
+          description: Plano em vigor para a sessão, decidido pela origem.
+        quota:
+          type: integer
+          description: Quantos watches a sessão pode ter.
+        used:
+          type: integer
+          description: Quantos já estão em uso.
+        suspensas:
+          type: array
+          items:
+            type: object
+          description: Watches suspensos e por quê.
+      required:
+      - ok
+      - watches
+      - plan
+      - quota
+      - used
+      - suspensas
+      description: Os CNPJs que esta sessão acompanha, com a cota que a ORIGEM aplica — não este Worker.

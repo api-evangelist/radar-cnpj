@@ -1,0 +1,60 @@
+openapi: 3.2.0
+info:
+  title: Radar CNPJ Sugerir API
+  version: 2d690e87
+  description: radar-cnpj.com — índice GET /api/.
+servers:
+- url: https://radar-cnpj.com
+tags:
+- name: Sugerir
+paths:
+  /api/sugerir:
+    get:
+      operationId: suggest
+      summary: Autocomplete de empresas e termos, para montar a lista enquanto a pessoa digita
+      description: 'Não conta como visita nas métricas — senão o painel mediria tecla, não gente.
+
+        Devolve: { ok, results }'
+      parameters:
+      - name: q
+        in: query
+        required: true
+        schema:
+          type: string
+        description: O que já foi digitado.
+        example: padar
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 10
+        description: Quantas sugestões devolver, de 1 a 50.
+      responses:
+        '200':
+          description: '{ ok, results }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListaSugestao'
+        '400':
+          description: '`q` ausente ou curto demais.'
+      tags:
+      - Sugerir
+components:
+  schemas:
+    ListaSugestao:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true`.
+        results:
+          type: array
+          items:
+            type: object
+          description: As sugestões, cada uma com o texto e o que ela identifica.
+      required:
+      - ok
+      - results
+      description: Sugestões de autocomplete — o suficiente para montar a lista enquanto a pessoa digita.

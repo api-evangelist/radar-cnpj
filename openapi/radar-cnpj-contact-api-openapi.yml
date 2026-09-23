@@ -1,0 +1,71 @@
+openapi: 3.2.0
+info:
+  title: Radar CNPJ Contact API
+  version: 2d690e87
+  description: radar-cnpj.com — índice GET /api/.
+servers:
+- url: https://radar-cnpj.com
+tags:
+- name: Contact
+paths:
+  /api/contact:
+    post:
+      operationId: post_api_contact
+      summary: O mesmo contato de `/api/contato`, com os nomes de campo em inglês
+      description: 'Existe porque agente que chegou pelo `llms.txt` de outro produto do mesmo dono já sabe mandar `name`/`email`/`message`. Mesmo backoff, mesmo preço.
+
+        Devolve: { ok }'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Como chamar quem escreveu.
+                email:
+                  type: string
+                  description: Para onde responder.
+                message:
+                  type: string
+                  description: O que você quer dizer.
+                form_ts:
+                  type: integer
+                  description: Momento em que o formulário abriu; é anti-robô do caminho humano.
+              required:
+              - name
+              - email
+              - message
+            example:
+              name: …
+              email: …
+              message: …
+              form_ts: 0
+      responses:
+        '200':
+          description: '{ ok }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '400':
+          description: Campo obrigatório faltando.
+        '402':
+          description: 'Cota estourada. A resposta traz `accepts[]` (x402, USDC na Base): pague e repita a mesma chamada com `X-PAYMENT`.'
+        '429':
+          description: 'Backoff de agente: espere o `Retry-After`.'
+      tags:
+      - Contact
+components:
+  schemas:
+    Ok:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true` — a falha vem como status 4xx/5xx, não como `ok:false`.
+      required:
+      - ok
+      description: Confirmação de escrita que não tem corpo próprio a devolver.

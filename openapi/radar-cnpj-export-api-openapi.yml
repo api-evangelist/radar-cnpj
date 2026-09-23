@@ -1,0 +1,137 @@
+openapi: 3.2.0
+info:
+  title: Radar CNPJ Export API
+  version: 2d690e87
+  description: radar-cnpj.com — índice GET /api/.
+servers:
+- url: https://radar-cnpj.com
+tags:
+- name: Export
+paths:
+  /api/export:
+    get:
+      operationId: get_api_export
+      summary: Exporta o resultado da busca em CSV ou JSON, com os mesmos filtros dela
+      description: 'Duas formas na mesma rota. Com `format=json` a resposta é o envelope descrito abaixo — é o que um agente usa. Com `format=csv` (o padrão) vem o arquivo: content-type e content-disposition são repassados da origem, para o browser baixar direto do link. `capped` avisa quando o export bateu no teto e não trouxe tudo.
+
+        Devolve: { ok, count, capped, results[{cnpj,cnpjFormatted,razaoSocial,nomeFantasia,situacao,uf,municipio,bairro,cnae}] }'
+      parameters:
+      - name: q
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Termo de busca, entre 2 e 120 caracteres.
+        example: padaria
+      - name: f
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filtros avançados em JSON (CNAE, situação, porte, data de abertura).
+        example: '{"uf":"SP"}'
+      - name: tipo
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Que campo o termo procura, quando não é busca livre.
+      - name: uf
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Restringe a uma unidade da federação.
+        example: SP
+      - name: format
+        in: query
+        required: false
+        schema:
+          type: string
+          default: csv
+          enum:
+          - csv
+          - json
+        description: Formato do arquivo.
+      responses:
+        '200':
+          description: '{ ok, count, capped, results[{cnpj,cnpjFormatted,razaoSocial,nomeFantasia,situacao,uf,municipio,bairro,cnae}] }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Export'
+        '400':
+          description: '`formato_invalido`, ou os mesmos erros de `GET /api/busca`.'
+      tags:
+      - Export
+components:
+  schemas:
+    Empresa:
+      type: object
+      properties:
+        cnpj:
+          type: string
+          description: CNPJ só com dígitos, 14 posições.
+        cnpjFormatted:
+          type: string
+          description: O mesmo CNPJ com pontuação, para mostrar a uma pessoa.
+        razaoSocial:
+          type: string
+          description: Razão social registrada na Receita.
+        nomeFantasia:
+          type: string
+          description: Nome fantasia, quando declarado.
+          nullable: true
+        situacao:
+          type: string
+          description: 'Situação cadastral: ativa, baixada, suspensa, inapta, nula.'
+        uf:
+          type: string
+          description: Unidade da federação do estabelecimento.
+          nullable: true
+        municipio:
+          type: string
+          description: Município do estabelecimento.
+          nullable: true
+        bairro:
+          type: string
+          description: Bairro do estabelecimento.
+          nullable: true
+        cnae:
+          type: string
+          description: CNAE principal do estabelecimento.
+          nullable: true
+      required:
+      - cnpj
+      - cnpjFormatted
+      - razaoSocial
+      - nomeFantasia
+      - situacao
+      - uf
+      - municipio
+      - bairro
+      - cnae
+      description: Uma empresa no resultado de busca. É o recorte da origem, não o cadastro inteiro.
+    Export:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true` quando o export saiu.
+        count:
+          type: integer
+          description: Quantas empresas o arquivo traz.
+        capped:
+          type: boolean
+          description: '`true` quando o export bateu no teto da origem e não trouxe tudo — o número acima não é o total do filtro.'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Empresa'
+          description: As empresas exportadas.
+      required:
+      - ok
+      - count
+      - capped
+      - results
+      description: O envelope de `GET /api/export?format=json`. Com `format=csv` a rota devolve o arquivo, não este objeto.

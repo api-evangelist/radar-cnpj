@@ -1,0 +1,51 @@
+openapi: 3.2.0
+info:
+  title: Radar Cnpj API
+  version: 2d690e87
+  description: radar-cnpj.com — índice GET /api/.
+servers:
+- url: https://radar-cnpj.com
+tags:
+- name: Cnpj
+paths:
+  /api/cnpj/{cnpj}:
+    get:
+      operationId: get_cnpj
+      summary: A ficha cadastral completa de uma empresa, pelos 14 dígitos do CNPJ
+      description: 'Cacheada na borda por 6 horas — o dump da Receita não muda em minutos.
+
+        Devolve: { ok, data }'
+      parameters:
+      - name: cnpj
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: '{ ok, data }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FichaCnpj'
+        '400':
+          description: CNPJ que não tem 14 dígitos.
+        '404':
+          description: CNPJ não existe na base.
+      tags:
+      - Cnpj
+components:
+  schemas:
+    FichaCnpj:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true` quando o CNPJ existe na base.
+        data:
+          type: object
+          description: 'O cadastro completo: identificação, endereço, sócios, CNAEs, Simples e situação.'
+      required:
+      - ok
+      - data
+      description: A ficha cadastral de uma empresa, repassada da origem. `data` é o cadastro da Receita como ela o entrega — o formato é contrato da origem, não deste Worker.

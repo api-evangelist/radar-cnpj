@@ -1,0 +1,75 @@
+openapi: 3.2.0
+info:
+  title: Radar CNPJ Contato API
+  version: 2d690e87
+  description: radar-cnpj.com — índice GET /api/.
+servers:
+- url: https://radar-cnpj.com
+tags:
+- name: Contato
+paths:
+  /api/contato:
+    post:
+      operationId: contact
+      summary: 'Fala com o suporte: humano resolve Turnstile, agente paga $0.10 em x402'
+      description: 'O primeiro envio de agente é livre; depois o backoff é 60s dobrando até o teto de 1 hora, informado em `Retry-After`. `POST /api/contact` é o mesmo recurso com os campos em inglês.
+
+        Devolve: { ok }'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                  description: Como chamar quem escreveu.
+                email:
+                  type: string
+                  description: Para onde responder.
+                mensagem:
+                  type: string
+                  description: O que você quer dizer.
+                aberto_em:
+                  type: integer
+                  description: Momento em que o formulário abriu; é anti-robô do caminho humano.
+                turnstile:
+                  type: string
+                  description: Resposta do Turnstile; presente só no caminho humano.
+              required:
+              - nome
+              - email
+              - mensagem
+            example:
+              nome: …
+              email: a@example.com
+              mensagem: …
+              aberto_em: 0
+              turnstile: (humano)
+      responses:
+        '200':
+          description: '{ ok }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '400':
+          description: Campo obrigatório faltando.
+        '402':
+          description: 'Cota estourada. A resposta traz `accepts[]` (x402, USDC na Base): pague e repita a mesma chamada com `X-PAYMENT`.'
+        '429':
+          description: 'Backoff de agente: espere o `Retry-After`.'
+      tags:
+      - Contato
+components:
+  schemas:
+    Ok:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true` — a falha vem como status 4xx/5xx, não como `ok:false`.
+      required:
+      - ok
+      description: Confirmação de escrita que não tem corpo próprio a devolver.

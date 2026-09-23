@@ -1,0 +1,64 @@
+openapi: 3.2.0
+info:
+  title: Radar CNPJ Municipio Proximo API
+  version: 2d690e87
+  description: radar-cnpj.com — índice GET /api/.
+servers:
+- url: https://radar-cnpj.com
+tags:
+- name: Municipio Proximo
+paths:
+  /api/municipio-proximo:
+    get:
+      operationId: get_api_municipio_proximo
+      summary: O município do IBGE mais próximo de um par de coordenadas, com o bairro do CNEFE
+      description: 'Também nunca é cacheada. Coordenada ausente ou vazia NÃO vira zero — (0,0) é um lugar de verdade, no golfo da Guiné.
+
+        Devolve: { ok, municipio, bairro?, cep? }'
+      parameters:
+      - name: lat
+        in: query
+        required: true
+        schema:
+          type: number
+        description: Latitude, entre -90 e 90.
+        example: '-23.55'
+      - name: lon
+        in: query
+        required: true
+        schema:
+          type: number
+        description: Longitude, entre -180 e 180.
+        example: '-46.63'
+      responses:
+        '200':
+          description: '{ ok, municipio, bairro?, cep? }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MunicipioProximo'
+        '400':
+          description: '`lat` ou `lon` ausentes ou fora da faixa.'
+      tags:
+      - Municipio Proximo
+components:
+  schemas:
+    MunicipioProximo:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true`.
+        municipio:
+          type: object
+          description: '`codigo`, `descricao`, `uf` e `km` — a distância até o centro do município.'
+        bairro:
+          type: object
+          description: Bairro do CNEFE mais próximo, quando existe.
+        cep:
+          type: string
+          description: CEP mais próximo, quando existe.
+      required:
+      - ok
+      - municipio
+      description: O município do IBGE mais próximo de um par de coordenadas, e o bairro do CNEFE quando dá para dizer.

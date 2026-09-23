@@ -1,0 +1,121 @@
+openapi: 3.2.0
+info:
+  title: Radar CNPJ Avaliar API
+  version: 2d690e87
+  description: radar-cnpj.com — índice GET /api/.
+servers:
+- url: https://radar-cnpj.com
+tags:
+- name: Avaliar
+paths:
+  /api/avaliar:
+    post:
+      operationId: avaliar
+      summary: Cola uma ideia de negócio em texto e recebe a ficha da oferta formal na Receita
+      description: 'É o primeiro produto da home. Devolve o CNAE a que a ideia foi mapeada, quantas empresas ativas, abertas e baixadas existem no recorte, como elas se formalizam e uma leitura honesta disso. **Não inventa volume de busca** e não promete demanda: `ficha.limites` diz o que os números não dizem. Renda passiva isto não é.
+
+        Devolve: { ok, texto, cnae, fonte_cnae, filtros, ficha{mapeou_cnae,oferta,formalizacao,leitura,limites,passivo} }'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                texto:
+                  type: string
+                  description: A ideia em 3 a 400 caracteres.
+                uf:
+                  type: string
+                  description: Hint de estado; só entra se a IA não resolver o lugar sozinha.
+                municipio:
+                  type: integer
+                  description: Hint de município (código IBGE); mesma regra do `uf`.
+              required:
+              - texto
+            example:
+              texto: padaria em Campinas
+              uf: SP
+              municipio: 6291
+      responses:
+        '200':
+          description: '{ ok, texto, cnae, fonte_cnae, filtros, ficha{mapeou_cnae,oferta,formalizacao,leitura,limites,passivo} }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Avaliacao'
+        '400':
+          description: Texto fora de 3–400 caracteres, ou corpo que não é JSON.
+        '405':
+          description: Só POST nesta rota.
+      tags:
+      - Avaliar
+components:
+  schemas:
+    FichaOferta:
+      type: object
+      properties:
+        mapeou_cnae:
+          type: boolean
+          description: Se deu para mapear a ideia num CNAE. Sem isso, os números abaixo não valem.
+        oferta:
+          type: object
+          description: Empresas ativas, abertas e baixadas no recorte, direto da Receita.
+        formalizacao:
+          type: object
+          description: 'Como essas empresas se formalizam: MEI, Simples, porte.'
+        leitura:
+          type: array
+          items:
+            type: string
+          description: O que os números sugerem, em frases — sem promessa de demanda.
+        limites:
+          type: array
+          items:
+            type: string
+          description: O que estes dados NÃO dizem. Não há volume de busca aqui, e renda passiva isto não é.
+        passivo:
+          type: object
+          description: Sinais de risco no recorte, quando existem.
+          nullable: true
+      required:
+      - mapeou_cnae
+      - oferta
+      - formalizacao
+      - leitura
+      - limites
+      - passivo
+      description: Quantas empresas já fazem isso, como elas se formalizam e o que esses números não dizem.
+    Avaliacao:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true` quando a avaliação saiu.
+        texto:
+          type: string
+          description: A ideia como você a escreveu.
+        cnae:
+          type: string
+          description: CNAE a que a ideia foi mapeada.
+          nullable: true
+        fonte_cnae:
+          type: string
+          description: 'Como o CNAE foi determinado: pela IA ou pelo hint que você mandou.'
+        filtros:
+          type: array
+          items:
+            type: object
+          description: Os filtros normalizados que a avaliação aplicou — dá para reusar em `GET /api/busca`.
+        ficha:
+          allOf:
+          - $ref: '#/components/schemas/FichaOferta'
+          description: O retrato da oferta formal e a leitura honesta dela.
+      required:
+      - ok
+      - texto
+      - cnae
+      - fonte_cnae
+      - filtros
+      - ficha
+      description: A leitura de uma ideia de negócio contra a oferta formal da Receita. É o primeiro produto da home.

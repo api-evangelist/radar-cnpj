@@ -1,0 +1,66 @@
+openapi: 3.2.0
+info:
+  title: Radar CNPJ Metrics API
+  version: 2d690e87
+  description: radar-cnpj.com — índice GET /api/.
+servers:
+- url: https://radar-cnpj.com
+tags:
+- name: Metrics
+paths:
+  /api/metrics:
+    get:
+      operationId: get_api_metrics
+      summary: 'Métricas operacionais: sem token, visitas de hoje e uso; com o token do…'
+      description: 'Conta visitantes distintos e **não** conta autocomplete — senão o painel mediria tecla, não gente. Sem `Authorization` devolve só `app`, `today_visits` e `usage`, com 5 min de cache na borda — é o que a linha de estado do rodapé lê, como nos outros produtos. Com `Bearer METRICS_TOKEN`, a resposta completa da origem (`days`, `accounts`), sem cache.
+
+        Devolve: { app, today_visits, days, usage, accounts }'
+      parameters:
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          type: string
+        description: '`Bearer <METRICS_TOKEN>`, só para a série completa do operador.'
+      responses:
+        '200':
+          description: '{ app, today_visits, days, usage, accounts }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metricas'
+        '401':
+          description: Token do operador errado.
+        '503':
+          description: Sem os secrets configurados no ambiente.
+      tags:
+      - Metrics
+components:
+  schemas:
+    Metricas:
+      type: object
+      properties:
+        app:
+          type: string
+          description: Nome do produto.
+        today_visits:
+          type: integer
+          description: Visitantes distintos hoje — não conta autocomplete.
+        days:
+          type: array
+          items:
+            type: object
+          description: Um registro por dia da janela.
+        usage:
+          type: object
+          description: Uso por recurso — aqui, `queries`.
+        accounts:
+          type: object
+          description: Sessões de monitoramento existentes.
+      required:
+      - app
+      - today_visits
+      - days
+      - usage
+      - accounts
+      description: Métricas operacionais da origem, 7 dias. Sem token vêm só `app`, `today_visits` e `usage`; `days` e `accounts` exigem `METRICS_TOKEN`.

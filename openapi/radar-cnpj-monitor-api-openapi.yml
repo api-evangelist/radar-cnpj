@@ -1,0 +1,142 @@
+openapi: 3.2.0
+info:
+  title: Radar CNPJ Monitor API
+  version: 2d690e87
+  description: radar-cnpj.com — índice GET /api/.
+servers:
+- url: https://radar-cnpj.com
+tags:
+- name: Monitor
+paths:
+  /api/monitor/session:
+    post:
+      operationId: monitor_session
+      summary: Cria uma sessão anônima de monitoramento e devolve o uuid dela
+      description: 'Não pede e-mail nem senha. O uuid vai no header `x-radar-session` de todas as outras rotas de monitor.
+
+        Devolve: { session_id }'
+      responses:
+        '200':
+          description: '{ session_id }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sessao'
+      tags:
+      - Monitor
+  /api/monitor/session/email:
+    put:
+      operationId: put_api_monitor_session_email
+      summary: Cadastra o e-mail que vai receber os alertas desta sessão
+      description: 'Sem e-mail confirmado os alertas continuam sendo gerados, mas ficam retidos — aparecem em `retidos` de `GET /api/me/monitor/alerts`.
+
+        Devolve: { ok }'
+      parameters:
+      - name: x-radar-session
+        in: header
+        required: true
+        schema:
+          type: string
+        description: UUID da sessão, vindo de `POST /api/monitor/session`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Endereço que vai receber os alertas.
+              required:
+              - email
+            example:
+              email: a@example.com
+      responses:
+        '200':
+          description: '{ ok }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '400':
+          description: E-mail ausente ou malformado.
+        '401':
+          description: Header `x-radar-session` ausente ou desconhecido.
+      tags:
+      - Monitor
+  /api/monitor/changes/{cnpj}:
+    get:
+      operationId: get_api_monitor_changes_by_cnpj
+      summary: O histórico de alterações cadastrais de um CNPJ
+      description: 'É o que o monitoramento observa: cada linha diz o que mudou, de que valor para qual, e quando.
+
+        Devolve: { ok, cnpj, cnpjFormatted, changes }'
+      parameters:
+      - name: cnpj
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: x-radar-session
+        in: header
+        required: true
+        schema:
+          type: string
+        description: UUID da sessão de monitoramento.
+      responses:
+        '200':
+          description: '{ ok, cnpj, cnpjFormatted, changes }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoricoCnpj'
+        '401':
+          description: Sessão ausente ou desconhecida.
+        '404':
+          description: CNPJ sem histórico ou fora da base.
+      tags:
+      - Monitor
+components:
+  schemas:
+    Ok:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true` — a falha vem como status 4xx/5xx, não como `ok:false`.
+      required:
+      - ok
+      description: Confirmação de escrita que não tem corpo próprio a devolver.
+    HistoricoCnpj:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true`.
+        cnpj:
+          type: string
+          description: CNPJ consultado, só dígitos.
+        cnpjFormatted:
+          type: string
+          description: O mesmo CNPJ com pontuação.
+        changes:
+          type: array
+          items:
+            type: object
+          description: Uma entrada por alteração observada, com o campo, o valor anterior e a data.
+      required:
+      - ok
+      - cnpj
+      - cnpjFormatted
+      - changes
+      description: O que mudou no cadastro de um CNPJ ao longo do tempo — é o que o monitoramento observa.
+    Sessao:
+      type: object
+      properties:
+        session_id:
+          type: string
+          description: UUID a mandar no header `x-radar-session` nas rotas de monitor.
+      required:
+      - session_id
+      description: 'A sessão anônima de monitoramento. Não tem login: o uuid É a identidade, e quem o tem vê os watches.'

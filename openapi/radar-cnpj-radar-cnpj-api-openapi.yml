@@ -1,0 +1,84 @@
+openapi: 3.2.0
+info:
+  title: Radar CNPJ API
+  version: 2d690e87
+  description: radar-cnpj.com — índice GET /api/.
+servers:
+- url: https://radar-cnpj.com
+tags:
+- name: Radar CNPJ
+paths:
+  /api/:
+    get:
+      operationId: api_index
+      summary: Índice auto-descrito de toda a superfície deste Worker, com a origem declarada
+      description: 'Devolve: { name, description, build, base_url, origin_api, docs, conventions, auth, endpoints, quota, mcp, mcp_tools, quickstart }'
+      responses:
+        '200':
+          description: '{ name, description, build, base_url, origin_api, docs, conventions, auth, endpoints, quota, mcp, mcp_tools, quickstart }'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Nome do produto.
+                  description:
+                    type: string
+                    description: O que o produto faz, em uma frase.
+                  build:
+                    type: string
+                    description: Commit publicado.
+                  base_url:
+                    type: string
+                    description: Origem em que esta API está servindo.
+                  origin_api:
+                    type: string
+                    description: A API de dados por trás deste proxy — é lá que o dado mora.
+                  docs:
+                    type: object
+                    description: Links para llms.txt, llms-full.txt, openapi.json, MCP e a UI.
+                  conventions:
+                    type: object
+                    description: Formato de erro, CORS, x402 e a regra de paridade UI↔API.
+                  auth:
+                    type: object
+                    description: Cada modo de autenticação e como obtê-lo.
+                  endpoints:
+                    type: array
+                    items:
+                      type: object
+                    description: Todo endpoint com método, caminho, auth, URL absoluta e o que devolve.
+                  quota:
+                    type: object
+                    description: O que é grátis, o que custa e como pagar.
+                  mcp:
+                    type: object
+                    description: Endereço e transporte do servidor MCP.
+                  mcp_tools:
+                    type: array
+                    items:
+                      type: string
+                    description: Nome de cada tool do MCP.
+                  quickstart:
+                    type: array
+                    items:
+                      type: string
+                    description: As chamadas que levam da ideia à lista de empresas.
+                required:
+                - name
+                - description
+                - build
+                - base_url
+                - origin_api
+                - docs
+                - conventions
+                - auth
+                - endpoints
+                - quota
+                - mcp
+                - mcp_tools
+                - quickstart
+      tags:
+      - Radar CNPJ

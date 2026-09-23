@@ -1,0 +1,49 @@
+openapi: 3.2.0
+info:
+  title: Radar CNPJ Health API
+  version: 2d690e87
+  description: radar-cnpj.com — índice GET /api/.
+servers:
+- url: https://radar-cnpj.com
+tags:
+- name: Health
+paths:
+  /api/health:
+    get:
+      operationId: health
+      summary: 'Saúde da origem e a idade do dado: de quando é o dump da Receita e o que ele tem'
+      description: '`import.dump_date` é a data do dump da Receita e `import.counts` traz a contagem por tabela — é onde se descobre que o dado tem semanas, não minutos.
+
+        Devolve: { ok, service, db, import }'
+      responses:
+        '200':
+          description: '{ ok, service, db, import }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaudeOrigem'
+      tags:
+      - Health
+components:
+  schemas:
+    SaudeOrigem:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true` quando a origem responde.
+        service:
+          type: string
+          description: Qual serviço respondeu.
+        db:
+          type: string
+          description: 'Estado do banco: `up` ou o motivo de não estar.'
+        import:
+          type: object
+          description: '`dump_date`, `loaded_at` e as contagens por tabela — é a idade real do dado.'
+      required:
+      - ok
+      - service
+      - db
+      - import
+      description: Saúde da origem e a idade do dado. É aqui que se vê de quando é o dump da Receita.

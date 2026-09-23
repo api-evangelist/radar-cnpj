@@ -1,0 +1,61 @@
+openapi: 3.2.0
+info:
+  title: Radar CNPJ Local API
+  version: 2d690e87
+  description: radar-cnpj.com — índice GET /api/.
+servers:
+- url: https://radar-cnpj.com
+tags:
+- name: Local
+paths:
+  /api/local:
+    get:
+      operationId: local
+      summary: Cidade e UF de quem está chamando, pela borda da Cloudflare
+      description: 'Nunca é cacheada: cache aqui entregaria o lugar de outra pessoa.
+
+        Devolve: { ok, cidade, uf, cep, pais, fonte }'
+      responses:
+        '200':
+          description: '{ ok, cidade, uf, cep, pais, fonte }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Local'
+      tags:
+      - Local
+components:
+  schemas:
+    Local:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true`.
+        cidade:
+          type: string
+          description: Cidade detectada.
+          nullable: true
+        uf:
+          type: string
+          description: Unidade da federação detectada.
+          nullable: true
+        cep:
+          type: string
+          description: CEP aproximado da borda.
+          nullable: true
+        pais:
+          type: string
+          description: País detectado, ISO 3166-1 alpha-2.
+          nullable: true
+        fonte:
+          type: string
+          description: De onde veio a detecção.
+      required:
+      - ok
+      - cidade
+      - uf
+      - cep
+      - pais
+      - fonte
+      description: 'Onde o visitante está, segundo a borda da Cloudflare. Nunca é cacheado: cache aqui daria o lugar de outra pessoa.'

@@ -1,0 +1,145 @@
+openapi: 3.2.0
+info:
+  title: Radar CNPJ Busca API
+  version: 2d690e87
+  description: radar-cnpj.com — índice GET /api/.
+servers:
+- url: https://radar-cnpj.com
+tags:
+- name: Busca
+paths:
+  /api/busca:
+    get:
+      operationId: search
+      summary: Busca empresas por termo e/ou filtros avançados, paginada
+      description: 'Exige termo OU pelo menos um filtro — varrer 71 milhões de estabelecimentos sem recorte não é uma busca, é um dump.
+
+        Devolve: { ok, page, pageSize, hasMore, results[{cnpj,cnpjFormatted,razaoSocial,nomeFantasia,situacao,uf,municipio,bairro,cnae}] }'
+      parameters:
+      - name: q
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Termo de busca, entre 2 e 120 caracteres.
+        example: padaria
+      - name: f
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Filtros avançados em JSON (CNAE, situação, porte, data de abertura).
+        example: '{"uf":"SP"}'
+      - name: tipo
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Que campo o termo procura, quando não é busca livre.
+      - name: uf
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Restringe a uma unidade da federação.
+        example: SP
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+        description: Página, começando em 0.
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
+        description: Resultados por página, de 1 a 50.
+      responses:
+        '200':
+          description: '{ ok, page, pageSize, hasMore, results[{cnpj,cnpjFormatted,razaoSocial,nomeFantasia,situacao,uf,municipio,bairro,cnae}] }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaDeBusca'
+        '400':
+          description: '`busca_vazia` (sem termo nem filtro), `termo_invalido` (fora de 2–120) ou `filtros_invalidos`.'
+      tags:
+      - Busca
+components:
+  schemas:
+    PaginaDeBusca:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true` quando a busca rodou.
+        page:
+          type: integer
+          description: Página devolvida, começando em 0.
+        pageSize:
+          type: integer
+          description: Quantos resultados por página.
+        hasMore:
+          type: boolean
+          description: Se existe página seguinte.
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Empresa'
+          description: As empresas desta página.
+      required:
+      - ok
+      - page
+      - pageSize
+      - hasMore
+      - results
+      description: Página da busca. Paginação por `page`/`pageSize`, e `hasMore` no lugar de um total — contar 71 milhões de estabelecimentos a cada busca não muda decisão nenhuma.
+    Empresa:
+      type: object
+      properties:
+        cnpj:
+          type: string
+          description: CNPJ só com dígitos, 14 posições.
+        cnpjFormatted:
+          type: string
+          description: O mesmo CNPJ com pontuação, para mostrar a uma pessoa.
+        razaoSocial:
+          type: string
+          description: Razão social registrada na Receita.
+        nomeFantasia:
+          type: string
+          description: Nome fantasia, quando declarado.
+          nullable: true
+        situacao:
+          type: string
+          description: 'Situação cadastral: ativa, baixada, suspensa, inapta, nula.'
+        uf:
+          type: string
+          description: Unidade da federação do estabelecimento.
+          nullable: true
+        municipio:
+          type: string
+          description: Município do estabelecimento.
+          nullable: true
+        bairro:
+          type: string
+          description: Bairro do estabelecimento.
+          nullable: true
+        cnae:
+          type: string
+          description: CNAE principal do estabelecimento.
+          nullable: true
+      required:
+      - cnpj
+      - cnpjFormatted
+      - razaoSocial
+      - nomeFantasia
+      - situacao
+      - uf
+      - municipio
+      - bairro
+      - cnae
+      description: Uma empresa no resultado de busca. É o recorte da origem, não o cadastro inteiro.

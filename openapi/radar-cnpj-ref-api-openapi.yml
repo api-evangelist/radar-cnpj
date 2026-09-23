@@ -1,0 +1,83 @@
+openapi: 3.2.0
+info:
+  title: Radar CNPJ Ref API
+  version: 2d690e87
+  description: radar-cnpj.com — índice GET /api/.
+servers:
+- url: https://radar-cnpj.com
+tags:
+- name: Ref
+paths:
+  /api/ref:
+    get:
+      operationId: ref
+      summary: 'Vocabulários oficiais para montar seletor: CNAE, município e natureza jurídica'
+      description: 'Ou você busca por texto (`q`) ou resolve códigos que já tem (`codigos`) — `codigos` ganha quando os dois vêm.
+
+        Devolve: { ok, results[{codigo,descricao}] }'
+      parameters:
+      - name: tipo
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - cnae
+          - municipio
+          - natureza
+        description: Qual vocabulário consultar.
+      - name: q
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Texto a procurar no vocabulário, até 60 caracteres.
+        example: padaria
+      - name: codigos
+        in: query
+        required: false
+        schema:
+          type: string
+        description: Códigos separados por vírgula, para resolver os nomes deles.
+        example: 4721102,4712100
+      responses:
+        '200':
+          description: '{ ok, results[{codigo,descricao}] }'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListaReferencia'
+        '400':
+          description: '`tipo` ausente ou fora da lista.'
+      tags:
+      - Ref
+components:
+  schemas:
+    ListaReferencia:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true`.
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemReferencia'
+          description: Os itens que casam com a consulta.
+      required:
+      - ok
+      - results
+      description: Itens de um vocabulário oficial (CNAE, município, natureza jurídica) para montar seletor.
+    ItemReferencia:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          description: Código oficial, ex. `4721102` para padaria.
+        descricao:
+          type: string
+          description: Nome do código por extenso.
+      required:
+      - codigo
+      - descricao
+      description: 'Um item de vocabulário oficial: o código que a Receita usa e o nome dele.'

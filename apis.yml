@@ -19,7 +19,7 @@ tags:
 - Data Enrichment
 - Geolocation
 - Monitoring & Alerts
-- agent-native
+- Agent-Native
 - MCP
 - Micropayments
 - x402
@@ -39,12 +39,12 @@ tags_raw:
 - MCP
 - Micropayments
 - x402
+- agent-native
 apis:
 - aid: radar-cnpj:radar-cnpj-apis-json-api
   name: Radar CNPJ Apis.json API
   description: The Apis.json API from Radar CNPJ — 1 operation(s) for apis.json.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - APIs.json
   tags_raw:
@@ -82,7 +82,6 @@ apis:
   name: Radar CNPJ Avaliar API
   description: The Avaliar API from Radar CNPJ — 1 operation(s) for avaliar.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - Avaliar
   properties:
@@ -118,7 +117,6 @@ apis:
   name: Radar CNPJ Busca API
   description: The Busca API from Radar CNPJ — 1 operation(s) for busca.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - Busca
   properties:
@@ -154,7 +152,6 @@ apis:
   name: Radar CNPJ Cnpj API
   description: The Cnpj API from Radar CNPJ — 1 operation(s) for cnpj.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - CNPJ
   tags_raw:
@@ -192,7 +189,6 @@ apis:
   name: Radar CNPJ Contact API
   description: The Contact API from Radar CNPJ — 1 operation(s) for contact.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - Contact
   properties:
@@ -228,7 +224,6 @@ apis:
   name: Radar CNPJ Contato API
   description: The Contato API from Radar CNPJ — 1 operation(s) for contato.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - Contato
   properties:
@@ -264,7 +259,6 @@ apis:
   name: Radar CNPJ Credito API
   description: The Credito API from Radar CNPJ — 1 operation(s) for credito.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - Credito
   properties:
@@ -300,7 +294,6 @@ apis:
   name: Radar CNPJ Export API
   description: The Export API from Radar CNPJ — 1 operation(s) for export.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - Export
   properties:
@@ -336,7 +329,6 @@ apis:
   name: Radar CNPJ Health API
   description: The Health API from Radar CNPJ — 1 operation(s) for health.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - Health
   properties:
@@ -372,7 +364,6 @@ apis:
   name: Radar CNPJ Ia API
   description: The Ia API from Radar CNPJ — 3 operation(s) for ia.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - Ia
   properties:
@@ -408,7 +399,6 @@ apis:
   name: Radar CNPJ Local API
   description: The Local API from Radar CNPJ — 1 operation(s) for local.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - Local
   properties:
@@ -444,7 +434,6 @@ apis:
   name: Radar CNPJ MCP API
   description: The Mcp API from Radar CNPJ — 1 operation(s) for mcp.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - MCP
   tags_raw:
@@ -482,7 +471,6 @@ apis:
   name: Radar CNPJ Me API
   description: The Me API from Radar CNPJ — 4 operation(s) for me.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - Me
   properties:
@@ -518,7 +506,6 @@ apis:
   name: Radar CNPJ Metrics API
   description: The Metrics API from Radar CNPJ — 1 operation(s) for metrics.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - Metrics
   properties:
@@ -554,7 +541,6 @@ apis:
   name: Radar CNPJ Monitor API
   description: The Monitor API from Radar CNPJ — 3 operation(s) for monitor.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - Monitors
   tags_raw:
@@ -592,7 +578,6 @@ apis:
   name: Radar CNPJ Municipio Proximo API
   description: The Municipio Proximo API from Radar CNPJ — 1 operation(s) for municipio proximo.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - Municipio Proximo
   properties:
@@ -628,7 +613,6 @@ apis:
   name: Radar CNPJ Okf API
   description: The Okf API from Radar CNPJ — 1 operation(s) for okf.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - Okf
   properties:
@@ -664,7 +648,6 @@ apis:
   name: Radar CNPJ Radar CNPJ API
   description: The Radar CNPJ API from Radar CNPJ — 1 operation(s) for radar cnpj.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - Radar CNPJ
   properties:
@@ -700,7 +683,6 @@ apis:
   name: Radar CNPJ Ref API
   description: The Ref API from Radar CNPJ — 1 operation(s) for ref.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - Ref
   properties:
@@ -736,7 +718,6 @@ apis:
   name: Radar CNPJ Sugerir API
   description: The Sugerir API from Radar CNPJ — 1 operation(s) for sugerir.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - Sugerir
   properties:
@@ -772,7 +753,6 @@ apis:
   name: Radar CNPJ .well Known API
   description: The .well Known API from Radar CNPJ — 1 operation(s) for .well known.
   humanURL: https://radar-cnpj.com/api/
-  baseURL: https://radar-cnpj.com
   tags:
   - .well Known
   properties:

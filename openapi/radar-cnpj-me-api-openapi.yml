@@ -133,15 +133,6 @@ paths:
       - Me
 components:
   schemas:
-    Ok:
-      type: object
-      properties:
-        ok:
-          type: boolean
-          description: Sempre `true` — a falha vem como status 4xx/5xx, não como `ok:false`.
-      required:
-      - ok
-      description: Confirmação de escrita que não tem corpo próprio a devolver.
     Alertas:
       type: object
       properties:
@@ -196,3 +187,12 @@ components:
       - used
       - suspensas
       description: Os CNPJs que esta sessão acompanha, com a cota que a ORIGEM aplica — não este Worker.
+    Ok:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true` — a falha vem como status 4xx/5xx, não como `ok:false`.
+      required:
+      - ok
+      description: Confirmação de escrita que não tem corpo próprio a devolver.

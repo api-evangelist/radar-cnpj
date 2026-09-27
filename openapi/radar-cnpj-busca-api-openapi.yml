@@ -70,33 +70,6 @@ paths:
       - Busca
 components:
   schemas:
-    PaginaDeBusca:
-      type: object
-      properties:
-        ok:
-          type: boolean
-          description: Sempre `true` quando a busca rodou.
-        page:
-          type: integer
-          description: Página devolvida, começando em 0.
-        pageSize:
-          type: integer
-          description: Quantos resultados por página.
-        hasMore:
-          type: boolean
-          description: Se existe página seguinte.
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Empresa'
-          description: As empresas desta página.
-      required:
-      - ok
-      - page
-      - pageSize
-      - hasMore
-      - results
-      description: Página da busca. Paginação por `page`/`pageSize`, e `hasMore` no lugar de um total — contar 71 milhões de estabelecimentos a cada busca não muda decisão nenhuma.
     Empresa:
       type: object
       properties:
@@ -143,3 +116,30 @@ components:
       - bairro
       - cnae
       description: Uma empresa no resultado de busca. É o recorte da origem, não o cadastro inteiro.
+    PaginaDeBusca:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true` quando a busca rodou.
+        page:
+          type: integer
+          description: Página devolvida, começando em 0.
+        pageSize:
+          type: integer
+          description: Quantos resultados por página.
+        hasMore:
+          type: boolean
+          description: Se existe página seguinte.
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Empresa'
+          description: As empresas desta página.
+      required:
+      - ok
+      - page
+      - pageSize
+      - hasMore
+      - results
+      description: Página da busca. Paginação por `page`/`pageSize`, e `hasMore` no lugar de um total — contar 71 milhões de estabelecimentos a cada busca não muda decisão nenhuma.

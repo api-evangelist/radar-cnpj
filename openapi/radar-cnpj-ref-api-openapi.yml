@@ -53,19 +53,6 @@ paths:
       - Ref
 components:
   schemas:
-    ItemReferencia:
-      type: object
-      properties:
-        codigo:
-          type: integer
-          description: Código oficial, ex. `4721102` para padaria.
-        descricao:
-          type: string
-          description: Nome do código por extenso.
-      required:
-      - codigo
-      - descricao
-      description: 'Um item de vocabulário oficial: o código que a Receita usa e o nome dele.'
     ListaReferencia:
       type: object
       properties:
@@ -81,3 +68,16 @@ components:
       - ok
       - results
       description: Itens de um vocabulário oficial (CNAE, município, natureza jurídica) para montar seletor.
+    ItemReferencia:
+      type: object
+      properties:
+        codigo:
+          type: integer
+          description: Código oficial, ex. `4721102` para padaria.
+        descricao:
+          type: string
+          description: Nome do código por extenso.
+      required:
+      - codigo
+      - descricao
+      description: 'Um item de vocabulário oficial: o código que a Receita usa e o nome dele.'

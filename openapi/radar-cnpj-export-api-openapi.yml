@@ -66,29 +66,6 @@ paths:
       - Export
 components:
   schemas:
-    Export:
-      type: object
-      properties:
-        ok:
-          type: boolean
-          description: Sempre `true` quando o export saiu.
-        count:
-          type: integer
-          description: Quantas empresas o arquivo traz.
-        capped:
-          type: boolean
-          description: '`true` quando o export bateu no teto da origem e não trouxe tudo — o número acima não é o total do filtro.'
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Empresa'
-          description: As empresas exportadas.
-      required:
-      - ok
-      - count
-      - capped
-      - results
-      description: O envelope de `GET /api/export?format=json`. Com `format=csv` a rota devolve o arquivo, não este objeto.
     Empresa:
       type: object
       properties:
@@ -135,3 +112,26 @@ components:
       - bairro
       - cnae
       description: Uma empresa no resultado de busca. É o recorte da origem, não o cadastro inteiro.
+    Export:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true` quando o export saiu.
+        count:
+          type: integer
+          description: Quantas empresas o arquivo traz.
+        capped:
+          type: boolean
+          description: '`true` quando o export bateu no teto da origem e não trouxe tudo — o número acima não é o total do filtro.'
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Empresa'
+          description: As empresas exportadas.
+      required:
+      - ok
+      - count
+      - capped
+      - results
+      description: O envelope de `GET /api/export?format=json`. Com `format=csv` a rota devolve o arquivo, não este objeto.

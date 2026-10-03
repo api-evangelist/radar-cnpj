@@ -133,27 +133,15 @@ paths:
       - Me
 components:
   schemas:
-    Alertas:
+    Ok:
       type: object
       properties:
         ok:
           type: boolean
-          description: Sempre `true`.
-        alerts:
-          type: array
-          items:
-            type: object
-          description: Um item por alteração detectada num CNPJ acompanhado.
-        retidos:
-          type: array
-          items:
-            type: object
-          description: Alertas que existem mas não foram entregues — normalmente por falta de e-mail confirmado.
+          description: Sempre `true` — a falha vem como status 4xx/5xx, não como `ok:false`.
       required:
       - ok
-      - alerts
-      - retidos
-      description: Os alertas gerados para os watches desta sessão.
+      description: Confirmação de escrita que não tem corpo próprio a devolver.
     Watches:
       type: object
       properties:
@@ -187,12 +175,24 @@ components:
       - used
       - suspensas
       description: Os CNPJs que esta sessão acompanha, com a cota que a ORIGEM aplica — não este Worker.
-    Ok:
+    Alertas:
       type: object
       properties:
         ok:
           type: boolean
-          description: Sempre `true` — a falha vem como status 4xx/5xx, não como `ok:false`.
+          description: Sempre `true`.
+        alerts:
+          type: array
+          items:
+            type: object
+          description: Um item por alteração detectada num CNPJ acompanhado.
+        retidos:
+          type: array
+          items:
+            type: object
+          description: Alertas que existem mas não foram entregues — normalmente por falta de e-mail confirmado.
       required:
       - ok
-      description: Confirmação de escrita que não tem corpo próprio a devolver.
+      - alerts
+      - retidos
+      description: Os alertas gerados para os watches desta sessão.

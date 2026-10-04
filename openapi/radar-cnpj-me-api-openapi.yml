@@ -133,15 +133,6 @@ paths:
       - Me
 components:
   schemas:
-    Ok:
-      type: object
-      properties:
-        ok:
-          type: boolean
-          description: Sempre `true` — a falha vem como status 4xx/5xx, não como `ok:false`.
-      required:
-      - ok
-      description: Confirmação de escrita que não tem corpo próprio a devolver.
     Watches:
       type: object
       properties:
@@ -196,3 +187,12 @@ components:
       - alerts
       - retidos
       description: Os alertas gerados para os watches desta sessão.
+    Ok:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true` — a falha vem como status 4xx/5xx, não como `ok:false`.
+      required:
+      - ok
+      description: Confirmação de escrita que não tem corpo próprio a devolver.

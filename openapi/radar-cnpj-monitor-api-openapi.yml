@@ -122,15 +122,6 @@ components:
       - cnpjFormatted
       - changes
       description: O que mudou no cadastro de um CNPJ ao longo do tempo — é o que o monitoramento observa.
-    Ok:
-      type: object
-      properties:
-        ok:
-          type: boolean
-          description: Sempre `true` — a falha vem como status 4xx/5xx, não como `ok:false`.
-      required:
-      - ok
-      description: Confirmação de escrita que não tem corpo próprio a devolver.
     Sessao:
       type: object
       properties:
@@ -140,3 +131,12 @@ components:
       required:
       - session_id
       description: 'A sessão anônima de monitoramento. Não tem login: o uuid É a identidade, e quem o tem vê os watches.'
+    Ok:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true` — a falha vem como status 4xx/5xx, não como `ok:false`.
+      required:
+      - ok
+      description: Confirmação de escrita que não tem corpo próprio a devolver.

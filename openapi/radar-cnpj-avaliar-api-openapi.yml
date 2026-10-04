@@ -52,39 +52,6 @@ paths:
       - Avaliar
 components:
   schemas:
-    Avaliacao:
-      type: object
-      properties:
-        ok:
-          type: boolean
-          description: Sempre `true` quando a avaliação saiu.
-        texto:
-          type: string
-          description: A ideia como você a escreveu.
-        cnae:
-          type: string
-          description: CNAE a que a ideia foi mapeada.
-          nullable: true
-        fonte_cnae:
-          type: string
-          description: 'Como o CNAE foi determinado: pela IA ou pelo hint que você mandou.'
-        filtros:
-          type: array
-          items:
-            type: object
-          description: Os filtros normalizados que a avaliação aplicou — dá para reusar em `GET /api/busca`.
-        ficha:
-          allOf:
-          - $ref: '#/components/schemas/FichaOferta'
-          description: O retrato da oferta formal e a leitura honesta dela.
-      required:
-      - ok
-      - texto
-      - cnae
-      - fonte_cnae
-      - filtros
-      - ficha
-      description: A leitura de uma ideia de negócio contra a oferta formal da Receita. É o primeiro produto da home.
     FichaOferta:
       type: object
       properties:
@@ -119,3 +86,36 @@ components:
       - limites
       - passivo
       description: Quantas empresas já fazem isso, como elas se formalizam e o que esses números não dizem.
+    Avaliacao:
+      type: object
+      properties:
+        ok:
+          type: boolean
+          description: Sempre `true` quando a avaliação saiu.
+        texto:
+          type: string
+          description: A ideia como você a escreveu.
+        cnae:
+          type: string
+          description: CNAE a que a ideia foi mapeada.
+          nullable: true
+        fonte_cnae:
+          type: string
+          description: 'Como o CNAE foi determinado: pela IA ou pelo hint que você mandou.'
+        filtros:
+          type: array
+          items:
+            type: object
+          description: Os filtros normalizados que a avaliação aplicou — dá para reusar em `GET /api/busca`.
+        ficha:
+          allOf:
+          - $ref: '#/components/schemas/FichaOferta'
+          description: O retrato da oferta formal e a leitura honesta dela.
+      required:
+      - ok
+      - texto
+      - cnae
+      - fonte_cnae
+      - filtros
+      - ficha
+      description: A leitura de uma ideia de negócio contra a oferta formal da Receita. É o primeiro produto da home.

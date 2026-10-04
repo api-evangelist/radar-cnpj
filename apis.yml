@@ -795,6 +795,9 @@ generated:
   confidence: 98
   at: '2026-09-05T11:47:06.889Z'
 common:
+- type: CapabilityMap
+  url: capabilities/radar-cnpj-capability-edges.yml
+  name: Radar CNPJ Business Capability Map
 - type: MCPServer
   url: https://radar-cnpj.com/mcp
 - type: MCPServer

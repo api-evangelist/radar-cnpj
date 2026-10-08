@@ -795,6 +795,10 @@ generated:
   confidence: 98
   at: '2026-09-05T11:47:06.889Z'
 common:
+- type: Plans
+  url: plans/radar-cnpj-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/radar-cnpj-rate-limits.yml
 - type: CapabilityMap
   url: capabilities/radar-cnpj-capability-edges.yml
   name: Radar CNPJ Business Capability Map

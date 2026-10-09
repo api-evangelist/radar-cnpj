@@ -31,3 +31,22 @@ plans:
     note: >-
       Overage arrives as HTTP 402 with x402 accepts[]; pay and repeat the same call with
       X-PAYMENT, or hold a prepaid cred_ bearer token that debits any paid API.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  units: []
+  plans:
+  - name: Free
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
+  - name: Pay-per-use (x402)
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods: []

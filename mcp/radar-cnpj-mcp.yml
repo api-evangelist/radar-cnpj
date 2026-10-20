@@ -24,7 +24,7 @@ protocol_version: '2024-11-05'
 server:
   name: Radar CNPJ
   version: 2d690e87
-tools_count: 13
+tools_count: 16
 tools_file: mcp/radar-cnpj-mcp-tools.json
 server_card_file: mcp/radar-cnpj-mcp-server-card.json
 x-evidence:
@@ -39,19 +39,100 @@ x-evidence:
     request: GET
     http_status: 200
 tools:
-- api_index
-- health
-- get_cnpj
-- search
-- suggest
-- ref
-- avaliar
-- ia_filters
-- local
-- contact
-- monitor_session
-- list_watches
-- add_watch
+- name: search_construction
+  description: Find Brazilian CNO construction works by their 12-digit number, a company CNPJ, or a city
+    and state. Filter by area in square meters, construction type, category and status. Only company-owned
+    records are included. Check source dates and update status.
+- name: api_index
+  description: 'The API index: operations, formats, authentication and limits.'
+- name: health
+  description: Health of the company database. `import.dump_date` is the reference date of the data and
+    `import.counts` has the record counts. It does not confirm real-time changes.
+- name: get_cnpj
+  description: 'Brazilian company record by CNPJ (14 digits or the alphanumeric format), with the public
+    records linked to the company in `data`: sanctions (CEIS, CNEP, CEPIM, leniency agreements and TCU)
+    in `data.sancoes`; the last CNIA check of monitored companies in `data.cnia` (for a live check, use
+    consulta_cnpj); federal tax debt (PGFN) in `data.dividaAtiva`, installment agreements in `data.parcelamentos`,
+    the tax regime (ECF) in `data.regimeTributario`, tax incentives (SISEN, ECF, DIRBI and import waivers)
+    in `data.beneficiosFiscais` and construction works (CNO) in `data.obras`; the Federal Revenue chronic
+    tax debtor list in `data.devedorContumaz` (`consta: true` means barred from public tenders); environmental
+    and labor risk in `data.ambiental` (Ibama fines and embargoes) and `data.trabalhoEscravo` (forced-labor
+    list of the MTE); government contracts on PNCP in `data.governo`; partners on the politically exposed
+    persons list (CGU) in `data.pep`; registrations with regulators (CVM, Central Bank, ANS, ANTT, ANP,
+    ANEEL, Anatel, Anvisa, CNES, Cadastur and Ibama) in `data.registros`; BNDES financing in `data.bndes`;
+    federal government disbursements in `data.pagamentos`; sales to federal agencies by invoice in `data.notasFederais`;
+    federal contracts since 2013 in `data.contratosFederais`; and election campaigns that hired the company
+    in `data.campanhas`. A partner who is a person comes with the name masked (`LUIS F. R. P.`), and so
+    do the name and house number of an individual entrepreneur (MEI included), phone numbers and e-mail,
+    with `data.mascarado: true`; a partner that is a company comes in full. The public answer can be reused
+    for up to 6 hours; check the reference date of the records.'
+- name: search
+  description: 'Search Brazilian companies by a term (`q`) and/or filters (`f`, a JSON string). `tipo`
+    picks what the term matches: `nome` (legal name), `fantasia` (trade name), `socio` (partner), `telefone`
+    (phone with area code), `email` (the full address on record), `endereco` (address) or `cnae` (activity
+    code). Needs a term or at least one filter: a search with neither would scan 71 million establishments.'
+- name: suggest
+  description: 'Up to eight Brazilian companies for a CNPJ, name, partner, phone or e-mail. It detects
+    the kind of input, joins the names and removes duplicates. Text needs at least three characters and
+    matches the legal name, the trade name and the partners; exact names come before prefixes, without
+    repeating a CNPJ. A phone needs the area code; an e-mail needs the full address on record. `incompleto:
+    true` means one of the sources failed. Suggestions include no contacts and no personal names. Not
+    cached and not counted as a visit in the metrics.'
+- name: ref
+  description: 'Reference vocabularies for the filters: CNAE activity codes (`cnae`), municipalities (`municipio`)
+    and legal natures (`natureza`). Search a vocabulary by text with `q`.'
+- name: avaliar
+  description: 'Evaluates a business idea in Brazil by how many companies are registered for it: the idea
+    is mapped to a CNAE activity code and a place, and the answer counts the active, opened and closed
+    companies there, shows how they are set up and gives a plain reading of the numbers. It does not estimate
+    search volume and does not promise demand: `ficha.limites` says what the numbers do not show. Up to
+    30 AI analyses a day per network, shared with ia_filters; after that, the tool answers `limite_diario`
+    with `renova_em`.'
+- name: ia_filters
+  description: Turns a plain-language description of the companies you want into filters for `search`
+    (`f`). It takes 18 to 20 seconds. It shares the daily limit of AI analyses with avaliar.
+- name: local
+  description: 'The caller''s approximate location (city and state) from the network edge. Never cached:
+    a cached answer would give someone else''s place.'
+- name: contact
+  description: 'Write to the people behind the product: a question, or a sponsorship/partnership/advertising
+    proposal. One route for a question and for a sponsorship, partnership or ad proposal (`tipo`, with
+    the placements of `GET /api/partners`). One message every 10 seconds per network: one that arrives
+    sooner waits its turn and then goes out — no error. The message reaches the team by e-mail, with `email`
+    as the reply address. For voice, send multipart/form-data: `dados` is this JSON (up to 32 KiB), and
+    `audio` is one WebM, Ogg or M4A audio file (up to 2 MB). Audio can replace message. The browser records
+    up to two minutes. Audio is attached to the owner''s e-mail.'
+- name: consulta_cadastro
+  description: Name, status, activity and address of a Brazilian company by CNPJ. It does not count against
+    the daily free limit, does not show contacts or partners and runs no extra checks. The origin's protection
+    limit still applies. For sanctions, tax status and a live CNIA check, use consulta_cnpj.
+- name: consulta_endereco
+  description: Addresses and companies at a CEP (Brazilian postal code), without counting against the
+    daily free limit. Up to 20 addresses and 20 companies; `pontos_total` has the total number of addresses.
+    The origin's protection limit still applies.
+- name: consulta_sugerir
+  description: Suggests up to 8 Brazilian companies for a CNPJ, company name, partner, phone or e-mail,
+    ordered by how well they match. It does not count against the daily free limit and does not show contacts.
+    `incompleto` means one of the sources did not answer.
+- name: consulta_cnpj
+  description: 'Brazilian company record by CNPJ from the Federal Revenue (Receita Federal), with the
+    special status when there is one (bankruptcy, judicial recovery, liquidation); its sanctions (CEIS,
+    CNEP, CEPIM, leniency agreements, TCU and the CNJ''s CNIA, checked live); partners on the politically
+    exposed persons list (CGU); tax status (federal tax debt, installment agreements, tax incentives and
+    construction works); the Federal Revenue chronic tax debtor list (`devedorContumaz.consta`: barred
+    from public tenders); environmental and labor risk (forced-labor list, Ibama embargoes and fines);
+    government contracts (PNCP, federal contracts since 2013 and sales to municipalities in the state
+    of SP, from TCE-SP) and BNDES financing; registrations with regulators and official registries (CVM,
+    Central Bank, ANS, ANTT, ANP, ANEEL, Anatel, Anvisa, CNES, Cadastur, Ibama, ANAC and SICAF); CVM investment
+    funds; and the address on the map (CNEFE/IBGE). Accepts the numeric and the alphanumeric CNPJ. Personal
+    data in the record comes masked. `sancoes` has what public registries record against the whole company
+    (the CNPJ root), updated daily: useful to vet suppliers. 10 free lookups per day per network; after
+    that, the tool answers `free_limit` with `resets_at`.'
+- name: consulta_cep
+  description: Addresses at a CEP (Brazilian postal code) with coordinates (CNEFE/IBGE) and the companies
+    registered there. Returns up to 20 addresses and up to 20 companies; the total number of addresses
+    is in `pontos_total`. 10 free lookups per day per network; after that, the tool answers `free_limit`
+    with `resets_at`.
 tool_quality:
   tool_count: 16
   tokens_total: 4555

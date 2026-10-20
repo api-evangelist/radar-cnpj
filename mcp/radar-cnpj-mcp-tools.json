@@ -1,215 +1,763 @@
 {
-    "jsonrpc": "2.0",
-    "id": 1,
-    "result": {
-        "tools": [
-            {
-                "name": "api_index",
-                "description": "\u00cdndice da API Radar CNPJ (radar-cnpj.com).",
-                "inputSchema": {
-                    "type": "object",
-                    "properties": {}
-                }
+  "endpoint": "https://radar-cnpj.com/mcp",
+  "captured": "2026-10-20",
+  "method": "initialize + tools/list (anonymous, no tool called; roadmap#992)",
+  "protocol_version": "2025-06-18",
+  "server_info": {
+    "name": "Radar CNPJ",
+    "version": "78e0bd5f"
+  },
+  "result": {
+    "tools": [
+      {
+        "name": "search_construction",
+        "title": "Find construction works",
+        "description": "Find Brazilian CNO construction works by their 12-digit number, a company CNPJ, or a city and state. Filter by area in square meters, construction type, category and status. Only company-owned records are included. Check source dates and update status.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "cno": {
+              "type": "string",
+              "description": "12-digit CNO number; punctuation is accepted."
             },
-            {
-                "name": "health",
-                "description": "Health da base.",
-                "inputSchema": {
-                    "type": "object",
-                    "properties": {}
-                }
+            "cnpj": {
+              "type": "string",
+              "description": "Valid CNPJ. Includes records for the same company root and previous links."
             },
-            {
-                "name": "get_cnpj",
-                "description": "Ficha de empresa por CNPJ (14 d\u00edgitos).",
-                "inputSchema": {
-                    "type": "object",
-                    "properties": {
-                        "cnpj": {
-                            "type": "string",
-                            "description": "14 d\u00edgitos"
-                        }
-                    },
-                    "required": [
-                        "cnpj"
-                    ]
-                }
+            "uf": {
+              "type": "string",
+              "description": "Two-letter Brazilian state code. Required with municipality."
             },
-            {
-                "name": "search",
-                "description": "Busca empresas (q e/ou filtros f=JSON).",
-                "inputSchema": {
-                    "type": "object",
-                    "properties": {
-                        "q": {
-                            "type": "string"
-                        },
-                        "f": {
-                            "type": "string",
-                            "description": "JSON string de filtros"
-                        },
-                        "page": {
-                            "type": "number"
-                        },
-                        "pageSize": {
-                            "type": "number"
-                        },
-                        "uf": {
-                            "type": "string"
-                        }
-                    }
-                }
+            "municipio": {
+              "type": "string",
+              "description": "Full municipality name. Use ref with tipo=municipio to find the name and state code."
             },
-            {
-                "name": "suggest",
-                "description": "Autocomplete.",
-                "inputSchema": {
-                    "type": "object",
-                    "properties": {
-                        "q": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "q"
-                    ]
-                }
+            "areaMin": {
+              "type": "number",
+              "description": "Minimum area in square meters."
             },
-            {
-                "name": "ref",
-                "description": "Ref CNAE/munic\u00edpio/natureza.",
-                "inputSchema": {
-                    "type": "object",
-                    "properties": {
-                        "tipo": {
-                            "type": "string",
-                            "description": "cnae|municipio|natureza|\u2026"
-                        },
-                        "q": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "tipo"
-                    ]
-                }
+            "areaMax": {
+              "type": "number",
+              "description": "Maximum area in square meters."
             },
-            {
-                "name": "avaliar",
-                "description": "Avalia uma ideia de neg\u00f3cio contra a base da Receita (CNAE + lugar \u2192 contagem de ativas). N\u00e3o estima busca no Google. POST /api/avaliar.",
-                "inputSchema": {
-                    "type": "object",
-                    "properties": {
-                        "texto": {
-                            "type": "string",
-                            "description": "Ideia em portugu\u00eas, 3\u2013400 caracteres."
-                        },
-                        "uf": {
-                            "type": "string",
-                            "description": "Hint de UF se a frase n\u00e3o tiver cidade."
-                        },
-                        "municipio": {
-                            "type": "number",
-                            "description": "Hint de c\u00f3digo de munic\u00edpio da Receita."
-                        }
-                    },
-                    "required": [
-                        "texto"
-                    ]
-                }
+            "tipo": {
+              "type": "string",
+              "description": "Recorded construction type: Alvenaria, Madeira or Mista."
             },
-            {
-                "name": "ia_filters",
-                "description": "Texto natural \u2192 filtros (POST /api/ia).",
-                "inputSchema": {
-                    "type": "object",
-                    "properties": {
-                        "texto": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "texto"
-                    ]
-                }
+            "categoria": {
+              "type": "string",
+              "description": "Recorded category, such as Obra Nova or Reforma."
             },
-            {
-                "name": "local",
-                "description": "Geo de borda do visitante (cidade/UF).",
-                "inputSchema": {
-                    "type": "object",
-                    "properties": {}
-                }
+            "situacao": {
+              "type": "string",
+              "description": "Status code: 1 void, 2 active, 3 suspended, 14 stopped, 15 closed."
             },
-            {
-                "name": "contact",
-                "description": "Contato. Agente sem captcha \u2192 402 $0.10 x402. Ap\u00f3s o 1\u00ba envio: 429 + Retry-After (backoff).",
-                "inputSchema": {
-                    "type": "object",
-                    "properties": {
-                        "nome": {
-                            "type": "string"
-                        },
-                        "email": {
-                            "type": "string"
-                        },
-                        "mensagem": {
-                            "type": "string"
-                        },
-                        "aberto_em": {
-                            "type": "number"
-                        }
-                    },
-                    "required": [
-                        "nome",
-                        "email",
-                        "mensagem",
-                        "aberto_em"
-                    ]
-                }
+            "limite": {
+              "type": "number",
+              "description": "Records per page: 1 to 50; default 20.",
+              "default": 20
             },
-            {
-                "name": "monitor_session",
-                "description": "Cria sess\u00e3o an\u00f4nima de monitoramento.",
-                "inputSchema": {
-                    "type": "object",
-                    "properties": {}
-                }
-            },
-            {
-                "name": "list_watches",
-                "description": "Lista watches da sess\u00e3o.",
-                "inputSchema": {
-                    "type": "object",
-                    "properties": {
-                        "session_id": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "session_id"
-                    ]
-                }
-            },
-            {
-                "name": "add_watch",
-                "description": "Adiciona CNPJ aos watches da sess\u00e3o. Os primeiros 10 s\u00e3o gr\u00e1tis; depois volta 402 (x402, slot de 30 dias).",
-                "inputSchema": {
-                    "type": "object",
-                    "properties": {
-                        "session_id": {
-                            "type": "string"
-                        },
-                        "cnpj": {
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "session_id",
-                        "cnpj"
-                    ]
-                }
+            "cursor": {
+              "type": "string",
+              "description": "Cursor from the previous response. Keep the same filters."
             }
+          }
+        },
+        "annotations": {
+          "title": "Find construction works",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp"
+            ]
+          }
         ]
-    }
+      },
+      {
+        "name": "api_index",
+        "title": "API index",
+        "description": "The API index: operations, formats, authentication and limits.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        },
+        "annotations": {
+          "title": "API index",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "health",
+        "title": "Health",
+        "description": "Health of the company database. `import.dump_date` is the reference date of the data and `import.counts` has the record counts. It does not confirm real-time changes.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        },
+        "annotations": {
+          "title": "Health",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "get_cnpj",
+        "title": "Get company by CNPJ",
+        "description": "Brazilian company record by CNPJ (14 digits or the alphanumeric format), with the public records linked to the company in `data`: sanctions (CEIS, CNEP, CEPIM, leniency agreements and TCU) in `data.sancoes`; the last CNIA check of monitored companies in `data.cnia` (for a live check, use consulta_cnpj); federal tax debt (PGFN) in `data.dividaAtiva`, installment agreements in `data.parcelamentos`, the tax regime (ECF) in `data.regimeTributario`, tax incentives (SISEN, ECF, DIRBI and import waivers) in `data.beneficiosFiscais` and construction works (CNO) in `data.obras`; the Federal Revenue chronic tax debtor list in `data.devedorContumaz` (`consta: true` means barred from public tenders); environmental and labor risk in `data.ambiental` (Ibama fines and embargoes) and `data.trabalhoEscravo` (forced-labor list of the MTE); government contracts on PNCP in `data.governo`; partners on the politically exposed persons list (CGU) in `data.pep`; registrations with regulators (CVM, Central Bank, ANS, ANTT, ANP, ANEEL, Anatel, Anvisa, CNES, Cadastur and Ibama) in `data.registros`; BNDES financing in `data.bndes`; federal government disbursements in `data.pagamentos`; sales to federal agencies by invoice in `data.notasFederais`; federal contracts since 2013 in `data.contratosFederais`; and election campaigns that hired the company in `data.campanhas`. A partner who is a person comes with the name masked (`LUIS F. R. P.`), and so do the name and house number of an individual entrepreneur (MEI included), phone numbers and e-mail, with `data.mascarado: true`; a partner that is a company comes in full. The public answer can be reused for up to 6 hours; check the reference date of the records.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "cnpj": {
+              "type": "string",
+              "description": "14 digits or the alphanumeric CNPJ."
+            },
+            "temas": {
+              "type": "string",
+              "maxLength": 240,
+              "description": "Comma-separated topics: dados, socios, sancoes, fiscal, divida, obras, trabalho, ibama, contratos, pep, vendas, campanhas, prefeituras, sicaf, aeronaves, fundos, rntrc, bndes, registros; todos. Omit for the full record. Basic company data always stays. Unrequested blocks are omitted; null means unchecked. Personal data remains masked."
+            }
+          },
+          "required": [
+            "cnpj"
+          ]
+        },
+        "annotations": {
+          "title": "Get company by CNPJ",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "search",
+        "title": "Search companies",
+        "description": "Search Brazilian companies by a term (`q`) and/or filters (`f`, a JSON string). `tipo` picks what the term matches: `nome` (legal name), `fantasia` (trade name), `socio` (partner), `telefone` (phone with area code), `email` (the full address on record), `endereco` (address) or `cnae` (activity code). Needs a term or at least one filter: a search with neither would scan 71 million establishments.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "q": {
+              "type": "string",
+              "description": "Search term, 2 to 120 characters."
+            },
+            "tipo": {
+              "type": "string",
+              "description": "What the term matches: nome|fantasia|socio|telefone|email|endereco|cnae."
+            },
+            "f": {
+              "type": "string",
+              "description": "Filters as a JSON string."
+            },
+            "page": {
+              "type": "number",
+              "description": "Page number, starting at 0.",
+              "default": 0
+            },
+            "pageSize": {
+              "type": "number",
+              "description": "Results per page, 1 to 50.",
+              "default": 20
+            },
+            "uf": {
+              "type": "string",
+              "description": "Limits the search to one Brazilian state (two-letter code, such as SP)."
+            }
+          }
+        },
+        "annotations": {
+          "title": "Search companies",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "suggest",
+        "title": "Suggest companies",
+        "description": "Up to eight Brazilian companies for a CNPJ, name, partner, phone or e-mail. It detects the kind of input, joins the names and removes duplicates. Text needs at least three characters and matches the legal name, the trade name and the partners; exact names come before prefixes, without repeating a CNPJ. A phone needs the area code; an e-mail needs the full address on record. `incompleto: true` means one of the sources failed. Suggestions include no contacts and no personal names. Not cached and not counted as a visit in the metrics.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "q": {
+              "type": "string",
+              "description": "A valid CNPJ, a phone with area code, a full e-mail or a text of 3 to 120 characters."
+            }
+          },
+          "required": [
+            "q"
+          ]
+        },
+        "annotations": {
+          "title": "Suggest companies",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ref",
+        "title": "Reference codes",
+        "description": "Reference vocabularies for the filters: CNAE activity codes (`cnae`), municipalities (`municipio`) and legal natures (`natureza`). Search a vocabulary by text with `q`.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "tipo": {
+              "type": "string",
+              "description": "Vocabulary: cnae, municipio or natureza.",
+              "enum": [
+                "cnae",
+                "municipio",
+                "natureza"
+              ]
+            },
+            "q": {
+              "type": "string",
+              "description": "Text to look for in the vocabulary, up to 60 characters."
+            }
+          },
+          "required": [
+            "tipo"
+          ]
+        },
+        "annotations": {
+          "title": "Reference codes",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "avaliar",
+        "title": "Evaluate a business idea",
+        "description": "Evaluates a business idea in Brazil by how many companies are registered for it: the idea is mapped to a CNAE activity code and a place, and the answer counts the active, opened and closed companies there, shows how they are set up and gives a plain reading of the numbers. It does not estimate search volume and does not promise demand: `ficha.limites` says what the numbers do not show. Up to 30 AI analyses a day per network, shared with ia_filters; after that, the tool answers `limite_diario` with `renova_em`.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "texto": {
+              "type": "string",
+              "description": "The idea in Portuguese, 3 to 400 characters, such as \"padaria em Campinas\"."
+            },
+            "uf": {
+              "type": "string",
+              "description": "State hint (two-letter code) when the text names no city."
+            },
+            "municipio": {
+              "type": "number",
+              "description": "Municipality hint: the Federal Revenue municipality code."
+            }
+          },
+          "required": [
+            "texto"
+          ]
+        },
+        "annotations": {
+          "title": "Evaluate a business idea",
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "ia_filters",
+        "title": "AI search filters",
+        "description": "Turns a plain-language description of the companies you want into filters for `search` (`f`). It takes 18 to 20 seconds. It shares the daily limit of AI analyses with avaliar.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "texto": {
+              "type": "string",
+              "description": "Plain-language description of what you are looking for."
+            }
+          },
+          "required": [
+            "texto"
+          ]
+        },
+        "annotations": {
+          "title": "AI search filters",
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "local",
+        "title": "Caller location",
+        "description": "The caller's approximate location (city and state) from the network edge. Never cached: a cached answer would give someone else's place.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        },
+        "annotations": {
+          "title": "Caller location",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "contact",
+        "title": "Contact",
+        "description": "Write to the people behind the product: a question, or a sponsorship/partnership/advertising proposal. One route for a question and for a sponsorship, partnership or ad proposal (`tipo`, with the placements of `GET /api/partners`). One message every 10 seconds per network: one that arrives sooner waits its turn and then goes out — no error. The message reaches the team by e-mail, with `email` as the reply address. For voice, send multipart/form-data: `dados` is this JSON (up to 32 KiB), and `audio` is one WebM, Ogg or M4A audio file (up to 2 MB). Audio can replace message. The browser records up to two minutes. Audio is attached to the owner's e-mail.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "What to call the person writing."
+            },
+            "email": {
+              "type": "string",
+              "description": "Where to reply."
+            },
+            "message": {
+              "type": "string",
+              "description": "What you want to say."
+            },
+            "whatsapp": {
+              "type": "string",
+              "description": "Optional reply number with country code, such as +5561999999999."
+            },
+            "prefer_whatsapp": {
+              "type": "boolean",
+              "description": "Request a WhatsApp reply. Requires whatsapp."
+            },
+            "tipo": {
+              "type": "string",
+              "enum": [
+                "patrocinio",
+                "parceria",
+                "anuncio",
+                "consultoria"
+              ],
+              "description": "Proposal: `patrocinio`, `parceria`, `anuncio` or `consultoria`. Turns on the fields below."
+            },
+            "empresa": {
+              "type": "string",
+              "description": "Who is proposing, when it is a company."
+            },
+            "site": {
+              "type": "string",
+              "description": "Website of who is proposing."
+            },
+            "orcamento": {
+              "type": "string",
+              "enum": [
+                "ate_100",
+                "100_500",
+                "500_2000",
+                "2000_mais",
+                "a_combinar",
+                "ate_2000",
+                "2000_5000",
+                "5000_10000",
+                "10000_mais",
+                "nao_sei"
+              ],
+              "description": "Advertising: `ate_100`, `100_500`, `500_2000`, `2000_mais` or `a_combinar`. Consulting, in US dollars: `ate_2000`, `2000_5000`, `5000_10000`, `10000_mais` or `nao_sei`."
+            },
+            "espaco": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Placement ids from `GET /api/partners`, up to 6."
+            },
+            "duracao": {
+              "type": "string",
+              "enum": [
+                "30",
+                "90",
+                "365"
+              ],
+              "description": "Exposure in days: `30`, `90` or `365`."
+            },
+            "pagamento": {
+              "type": "string",
+              "enum": [
+                "usdc",
+                "deposito",
+                "a_combinar"
+              ]
+            },
+            "projeto": {
+              "type": "string",
+              "enum": [
+                "llm_privado",
+                "voz",
+                "dados_sensiveis",
+                "gpu",
+                "integracao",
+                "outro"
+              ],
+              "description": "Consulting: the kind of project (`llm_privado`, `voz`, `dados_sensiveis`, `gpu`, `integracao` or `outro`)."
+            },
+            "prazo": {
+              "type": "string",
+              "enum": [
+                "agora",
+                "1_mes",
+                "1_3_meses",
+                "explorando"
+              ],
+              "description": "Consulting: when to start (`agora`, `1_mes`, `1_3_meses` or `explorando`)."
+            },
+            "formato": {
+              "type": "string",
+              "enum": [
+                "projeto",
+                "mensal",
+                "assessoria"
+              ],
+              "description": "Consulting: `projeto` (per scope), `mensal` (monthly) or `assessoria` (advisory)."
+            },
+            "pais": {
+              "type": "string",
+              "description": "Consulting: the country of the person asking."
+            },
+            "fuso": {
+              "type": "string",
+              "description": "Consulting: the IANA time zone, such as `America/New_York`."
+            },
+            "horarios": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Consulting: up to 3 times for the call, `YYYY-MM-DDTHH:MM` in that time zone."
+            }
+          },
+          "required": [
+            "name",
+            "email",
+            "message"
+          ]
+        },
+        "annotations": {
+          "title": "Contact",
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "consulta_cadastro",
+        "title": "Company registration record",
+        "description": "Name, status, activity and address of a Brazilian company by CNPJ. It does not count against the daily free limit, does not show contacts or partners and runs no extra checks. The origin's protection limit still applies. For sanctions, tax status and a live CNIA check, use consulta_cnpj.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "cnpj": {
+              "type": "string",
+              "description": "CNPJ, with or without punctuation."
+            }
+          },
+          "required": [
+            "cnpj"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Company registration record",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "consulta_endereco",
+        "title": "Addresses of a CEP",
+        "description": "Addresses and companies at a CEP (Brazilian postal code), without counting against the daily free limit. Up to 20 addresses and 20 companies; `pontos_total` has the total number of addresses. The origin's protection limit still applies.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "cep": {
+              "type": "string",
+              "description": "CEP, with or without the hyphen."
+            }
+          },
+          "required": [
+            "cep"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Addresses of a CEP",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "consulta_sugerir",
+        "title": "Find a company",
+        "description": "Suggests up to 8 Brazilian companies for a CNPJ, company name, partner, phone or e-mail, ordered by how well they match. It does not count against the daily free limit and does not show contacts. `incompleto` means one of the sources did not answer.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "q": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 120,
+              "description": "A name of 3 to 120 characters, a CNPJ, a phone with area code or a full e-mail."
+            }
+          },
+          "required": [
+            "q"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Find a company",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "consulta_cnpj",
+        "title": "Check a company (live)",
+        "description": "Brazilian company record by CNPJ from the Federal Revenue (Receita Federal), with the special status when there is one (bankruptcy, judicial recovery, liquidation); its sanctions (CEIS, CNEP, CEPIM, leniency agreements, TCU and the CNJ's CNIA, checked live); partners on the politically exposed persons list (CGU); tax status (federal tax debt, installment agreements, tax incentives and construction works); the Federal Revenue chronic tax debtor list (`devedorContumaz.consta`: barred from public tenders); environmental and labor risk (forced-labor list, Ibama embargoes and fines); government contracts (PNCP, federal contracts since 2013 and sales to municipalities in the state of SP, from TCE-SP) and BNDES financing; registrations with regulators and official registries (CVM, Central Bank, ANS, ANTT, ANP, ANEEL, Anatel, Anvisa, CNES, Cadastur, Ibama, ANAC and SICAF); CVM investment funds; and the address on the map (CNEFE/IBGE). Accepts the numeric and the alphanumeric CNPJ. Personal data in the record comes masked. `sancoes` has what public registries record against the whole company (the CNPJ root), updated daily: useful to vet suppliers. 10 free lookups per day per network; after that, the tool answers `free_limit` with `resets_at`.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "cnpj": {
+              "type": "string",
+              "description": "CNPJ, with or without punctuation."
+            },
+            "temas": {
+              "type": "string",
+              "maxLength": 240,
+              "description": "Comma-separated topics: dados, socios, sancoes, fiscal, divida, obras, trabalho, ibama, contratos, pep, vendas, campanhas, prefeituras, sicaf, aeronaves, fundos, rntrc, bndes, registros; todos. Omit for the full record. Basic company data always stays. Unrequested blocks are omitted; null means unchecked. Personal data remains masked."
+            }
+          },
+          "required": [
+            "cnpj"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Check a company (live)",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": true
+        },
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "consulta_cep",
+        "title": "Check a CEP",
+        "description": "Addresses at a CEP (Brazilian postal code) with coordinates (CNEFE/IBGE) and the companies registered there. Returns up to 20 addresses and up to 20 companies; the total number of addresses is in `pontos_total`. 10 free lookups per day per network; after that, the tool answers `free_limit` with `resets_at`.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "cep": {
+              "type": "string",
+              "description": "CEP with 8 digits."
+            }
+          },
+          "required": [
+            "cep"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Check a CEP",
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "mcp"
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }

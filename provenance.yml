@@ -35,7 +35,7 @@ artifacts:
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-10-31T095417.yml:
+  kin/checks-2026-11-02T082323.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -90,6 +90,15 @@ artifacts:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-10-31T095417.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-01T171331.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-01T200237.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-02T082323.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   lifecycle/radar-cnpj-lifecycle.yml:
@@ -195,11 +204,17 @@ artifacts:
   overlays/radar-cnpj-openapi-overlay.yaml:
     method: derived
     evidence: an API Evangelist overlay (title) over the provider's contract
+  patterns/radar-cnpj-patterns.yml:
+    method: derived
+    evidence: declared in the artifact
   plans/radar-cnpj-plans-pricing.yml:
     method: searched
     evidence: declared in the artifact
   rate-limits/radar-cnpj-rate-limits.yml:
     method: searched
+    evidence: declared in the artifact
+  rules/radar-cnpj-rules.yml:
+    method: generated
     evidence: declared in the artifact
   security/radar-cnpj-domain-security.yml:
     method: unknown
@@ -214,6 +229,9 @@ artifacts:
     method: generated
     evidence: declared in the artifact
   skills/radar-cnpj-monitor-cnpj.md:
+    method: generated
+    evidence: declared in the artifact
+  sla/radar-cnpj-sla.yml:
     method: generated
     evidence: declared in the artifact
   well-known/radar-cnpj-api-catalog.json:
